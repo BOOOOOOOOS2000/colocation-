@@ -1,0 +1,1721 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Coloco - Trouve ta colocation idéale</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Maps API -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <style>
+        /* Variables CSS */
+        :root {
+            --primary: #4a6fa5;
+            --primary-dark: #385d8a;
+            --secondary: #ff7e5f;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --success: #28a745;
+            --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            --border-radius: 12px;
+        }
+        
+        /* Reset et styles de base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark);
+            overflow-x: hidden;
+            height: 100vh;
+        }
+        
+        /* Application container */
+        .app-container {
+            max-width: 100%;
+            height: 100vh;
+            margin: 0 auto;
+            position: relative;
+            background-color: white;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+        
+        /* En-tête */
+        .app-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+            position: relative;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo i {
+            font-size: 1.8rem;
+        }
+        
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        /* Navigation */
+        .app-nav {
+            display: flex;
+            background-color: white;
+            border-bottom: 1px solid var(--light-gray);
+            overflow-x: auto;
+            white-space: nowrap;
+            padding: 0 10px;
+        }
+        
+        .nav-item {
+            padding: 15px 20px;
+            text-align: center;
+            color: var(--gray);
+            font-weight: 500;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            cursor: pointer;
+            flex: 1;
+            min-width: 120px;
+        }
+        
+        .nav-item.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+        
+        .nav-item i {
+            margin-right: 8px;
+        }
+        
+        /* Contenu principal */
+        .app-content {
+            height: calc(100vh - 140px);
+            overflow-y: auto;
+            padding-bottom: 20px;
+        }
+        
+        /* Section active */
+        .section {
+            display: none;
+            padding: 20px;
+            animation: fadeIn 0.3s;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Section d'accueil */
+        .hero {
+            text-align: center;
+            padding: 30px 20px 40px;
+            background: linear-gradient(135deg, #f5f7fa, #e4edf5);
+            border-radius: 0 0 30px 30px;
+            margin-bottom: 20px;
+        }
+        
+        .hero h2 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 1.8rem;
+        }
+        
+        .hero p {
+            color: var(--gray);
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+        
+        /* Boutons */
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(74, 111, 165, 0.2);
+        }
+        
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(74, 111, 165, 0.3);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #ff6b4a;
+        }
+        
+        .btn-full {
+            width: 100%;
+        }
+        
+        /* Filtres */
+        .filters-container {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+        
+        .filters-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .filters-header h3 {
+            color: var(--primary);
+        }
+        
+        .filter-group {
+            margin-bottom: 15px;
+        }
+        
+        .filter-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--dark);
+            font-weight: 500;
+        }
+        
+        .filter-group input, .filter-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--light-gray);
+            border-radius: 8px;
+            font-size: 1rem;
+            background-color: white;
+        }
+        
+        .filter-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .filter-option {
+            padding: 8px 15px;
+            background-color: var(--light-gray);
+            border-radius: 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .filter-option.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        /* Annonces */
+        .listings-container {
+            margin-top: 20px;
+        }
+        
+        .listing-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+        
+        .listing-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .listing-image {
+            height: 200px;
+            background-color: var(--light-gray);
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .listing-price {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: var(--secondary);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .listing-details {
+            padding: 20px;
+        }
+        
+        .listing-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+        
+        .listing-location {
+            color: var(--gray);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .listing-features {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+        
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .favorite-icon {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.3);
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+        
+        .favorite-icon.active {
+            color: #ff4757;
+        }
+        
+        /* Section Carte */
+        .map-section {
+            padding: 0;
+            height: 100%;
+        }
+        
+        .map-header {
+            padding: 15px 20px;
+            background-color: white;
+            border-bottom: 1px solid var(--light-gray);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .map-header h3 {
+            color: var(--primary);
+        }
+        
+        .map-container {
+            height: calc(100vh - 220px);
+            width: 100%;
+            border-radius: 0;
+        }
+        
+        /* Carte Leaflet */
+        #map {
+            height: 100%;
+            width: 100%;
+            z-index: 1;
+        }
+        
+        /* Contrôles de la carte */
+        .map-controls {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .map-control-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background-color: white;
+            border: none;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--primary);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .map-control-btn:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        /* Marqueurs de carte personnalisés */
+        .custom-marker {
+            background-color: var(--primary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            border: 3px solid white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .custom-marker:hover {
+            transform: scale(1.2);
+            background-color: var(--secondary);
+        }
+        
+        .custom-marker i {
+            font-size: 1.2rem;
+        }
+        
+        /* Popup des marqueurs */
+        .leaflet-popup-content {
+            min-width: 200px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .marker-popup {
+            padding: 10px;
+        }
+        
+        .popup-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+        
+        .popup-price {
+            color: var(--secondary);
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+        }
+        
+        .popup-location {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .popup-btn {
+            display: block;
+            width: 100%;
+            padding: 8px 15px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+        }
+        
+        /* Section Détails */
+        .detail-images {
+            height: 250px;
+            background-color: var(--light-gray);
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .detail-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .detail-info {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+        
+        .detail-title {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+        
+        .detail-price {
+            color: var(--secondary);
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .detail-description {
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: var(--gray);
+        }
+        
+        .detail-features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .detail-feature {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        /* Section Chat */
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 500px;
+            background-color: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        
+        .chat-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .chat-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .chat-contact-info h4 {
+            font-size: 1.1rem;
+            margin-bottom: 3px;
+        }
+        
+        .chat-contact-info p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .message {
+            max-width: 80%;
+            padding: 12px 15px;
+            border-radius: 18px;
+            line-height: 1.4;
+        }
+        
+        .message.received {
+            align-self: flex-start;
+            background-color: var(--light-gray);
+            border-bottom-left-radius: 5px;
+        }
+        
+        .message.sent {
+            align-self: flex-end;
+            background-color: var(--primary);
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+        
+        .chat-input {
+            display: flex;
+            padding: 15px;
+            background-color: var(--light-gray);
+            gap: 10px;
+        }
+        
+        .chat-input input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            font-size: 1rem;
+        }
+        
+        .chat-input button {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        
+        /* Section Publication */
+        .publish-form {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--dark);
+            font-weight: 500;
+        }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--light-gray);
+            border-radius: 8px;
+            font-size: 1rem;
+            background-color: white;
+        }
+        
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .photo-upload {
+            border: 2px dashed var(--light-gray);
+            border-radius: 8px;
+            padding: 30px 20px;
+            text-align: center;
+            color: var(--gray);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .photo-upload:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        /* Section Favoris */
+        .empty-state {
+            text-align: center;
+            padding: 50px 20px;
+            color: var(--gray);
+        }
+        
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: var(--light-gray);
+        }
+        
+        /* Barre de recherche */
+        .search-bar {
+            padding: 15px 20px;
+            background-color: white;
+            display: flex;
+            gap: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid var(--light-gray);
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        
+        /* Modal pour les détails */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: var(--border-radius);
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: white;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--gray);
+            cursor: pointer;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h2 {
+                font-size: 1.5rem;
+            }
+            
+            .detail-features {
+                grid-template-columns: 1fr;
+            }
+            
+            .map-container {
+                height: calc(100vh - 200px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- En-tête de l'application -->
+        <header class="app-header">
+            <div class="logo">
+                <i class="fas fa-home"></i>
+                <h1>Coloco</h1>
+            </div>
+            <div class="user-avatar">
+                <span>YA</span>
+            </div>
+        </header>
+        
+        <!-- Navigation -->
+        <nav class="app-nav">
+            <div class="nav-item active" data-section="accueil">
+                <i class="fas fa-home"></i> Accueil
+            </div>
+            <div class="nav-item" data-section="recherche">
+                <i class="fas fa-search"></i> Recherche
+            </div>
+            <div class="nav-item" data-section="carte">
+                <i class="fas fa-map-marker-alt"></i> Carte
+            </div>
+            <div class="nav-item" data-section="favoris">
+                <i class="fas fa-heart"></i> Favoris
+            </div>
+            <div class="nav-item" data-section="chat">
+                <i class="fas fa-comments"></i> Messages
+            </div>
+        </nav>
+        
+        <!-- Contenu principal -->
+        <main class="app-content">
+            <!-- Section d'accueil -->
+            <section id="accueil" class="section active">
+                <div class="hero">
+                    <h2>Trouve ta colocation idéale</h2>
+                    <p>Que tu sois étudiant ou jeune professionnel, Coloco te simplifie la recherche de logement partagé partout en Algérie</p>
+                    <button class="btn btn-secondary" id="start-search">Commencer la recherche</button>
+                </div>
+                
+                <div class="filters-container">
+                    <div class="filters-header">
+                        <h3>Filtres rapides</h3>
+                        <span class="filter-count">4 filtres</span>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>Localisation</label>
+                        <input type="text" placeholder="Alger, Oran, Constantine..." value="Alger" id="location-input">
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>Loyer maximum</label>
+                        <input type="range" min="10000" max="100000" value="40000" step="5000" id="rent-slider">
+                        <div style="display: flex; justify-content: space-between; margin-top: 5px;">
+                            <span>10 000 DA</span>
+                            <span id="rent-value">40 000 DA</span>
+                            <span>100 000 DA</span>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>Disponibilité</label>
+                        <input type="date" value="2023-10-01">
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>Équipements</label>
+                        <div class="filter-options">
+                            <span class="filter-option active">Meublé</span>
+                            <span class="filter-option">WiFi</span>
+                            <span class="filter-option">Climatisation</span>
+                            <span class="filter-option">Parking</span>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-full" id="apply-filters">Appliquer les filtres</button>
+                </div>
+                
+                <div class="listings-container">
+                    <h3 style="margin-bottom: 15px; color: var(--primary);">Annonces récentes</h3>
+                    
+                    <!-- Annonce 1 -->
+                    <div class="listing-card" data-listing-id="1">
+                        <div class="listing-image" style="background-image: url('https://images.unsplash.com/photo-1555854877-bab0e564b8d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
+                            <div class="listing-price">35 000 DA</div>
+                            <div class="favorite-icon active">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                        </div>
+                        <div class="listing-details">
+                            <h3 class="listing-title">Coloc spacieuse à Hydra</h3>
+                            <div class="listing-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Hydra, Alger</span>
+                            </div>
+                            <p>Chambre disponible dans un appartement de 4 chambres avec terrasse et vue mer. Idéal pour étudiant ou jeune professionnel.</p>
+                            <div class="listing-features">
+                                <div class="feature">
+                                    <i class="fas fa-bed"></i>
+                                    <span>Chambre simple</span>
+                                </div>
+                                <div class="feature">
+                                    <i class="fas fa-ruler-combined"></i>
+                                    <span>18 m²</span>
+                                </div>
+                                <div class="feature">
+                                    <i class="fas fa-users"></i>
+                                    <span>3 colocataires</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Annonce 2 -->
+                    <div class="listing-card" data-listing-id="2">
+                        <div class="listing-image" style="background-image: url('https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
+                            <div class="listing-price">28 000 DA</div>
+                            <div class="favorite-icon">
+                                <i class="far fa-heart"></i>
+                            </div>
+                        </div>
+                        <div class="listing-details">
+                            <h3 class="listing-title">Appartement moderne à Bab Ezzouar</h3>
+                            <div class="listing-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Bab Ezzouar, Alger</span>
+                            </div>
+                            <p>Colocation dans un appartement neuf à proximité de l'université. Charges incluses. Environnement calme.</p>
+                            <div class="listing-features">
+                                <div class="feature">
+                                    <i class="fas fa-bed"></i>
+                                    <span>Chambre simple</span>
+                                </div>
+                                <div class="feature">
+                                    <i class="fas fa-ruler-combined"></i>
+                                    <span>15 m²</span>
+                                </div>
+                                <div class="feature">
+                                    <i class="fas fa-users"></i>
+                                    <span>2 colocataires</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Section Recherche -->
+            <section id="recherche" class="section">
+                <div class="search-bar">
+                    <input type="text" class="search-input" placeholder="Rechercher une colocation..." id="search-input">
+                    <button class="btn" id="search-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+                
+                <div class="filters-container">
+                    <div class="filters-header">
+                        <h3>Filtres avancés</h3>
+                        <button class="btn" style="padding: 8px 15px; font-size: 0.9rem;" id="reset-filters">Réinitialiser</button>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>Type de logement</label>
+                        <div class="filter-options">
+                            <span class="filter-option active">Appartement</span>
+                            <span class="filter-option">Maison</span>
+                            <span class="filter-option">Studio</span>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>Budget mensuel (DA)</label>
+                        <div style="display: flex; gap: 10px;">
+                            <input type="number" placeholder="Min" value="15000" id="min-price">
+                            <input type="number" placeholder="Max" value="50000" id="max-price">
+                        </div>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>Superficie (m²)</label>
+                        <select id="surface-select">
+                            <option value="">Toutes</option>
+                            <option value="10">Moins de 10 m²</option>
+                            <option value="15">10-15 m²</option>
+                            <option value="20">15-20 m²</option>
+                            <option value="21">Plus de 20 m²</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>Charges incluses</label>
+                        <div class="filter-options">
+                            <span class="filter-option active">Électricité</span>
+                            <span class="filter-option">Eau</span>
+                            <span class="filter-option">Internet</span>
+                            <span class="filter-option">Toutes</span>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>Règles de la maison</label>
+                        <div class="filter-options">
+                            <span class="filter-option">Non-fumeur</span>
+                            <span class="filter-option">Animaux autorisés</span>
+                            <span class="filter-option">Filles uniquement</span>
+                            <span class="filter-option">Garçons uniquement</span>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-full" id="show-results">Afficher 12 résultats</button>
+                </div>
+            </section>
+            
+            <!-- Section Carte -->
+            <section id="carte" class="section map-section">
+                <div class="map-header">
+                    <h3>Colocations disponibles sur la carte</h3>
+                    <div class="map-legend">
+                        <span style="color: var(--primary); font-size: 0.9rem;">
+                            <i class="fas fa-map-marker-alt"></i> 8 annonces
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="map-container">
+                    <div id="map"></div>
+                    
+                    <div class="map-controls">
+                        <button class="map-control-btn" id="locate-me" title="Me localiser">
+                            <i class="fas fa-location-arrow"></i>
+                        </button>
+                        <button class="map-control-btn" id="zoom-in" title="Zoomer">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                        <button class="map-control-btn" id="zoom-out" title="Dézoomer">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Section Favoris -->
+            <section id="favoris" class="section">
+                <h3 style="margin-bottom: 15px; color: var(--primary);">Mes favoris</h3>
+                
+                <div class="listing-card" data-listing-id="1">
+                    <div class="listing-image" style="background-image: url('https://images.unsplash.com/photo-1555854877-bab0e564b8d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
+                        <div class="listing-price">35 000 DA</div>
+                        <div class="favorite-icon active">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                    </div>
+                    <div class="listing-details">
+                        <h3 class="listing-title">Coloc spacieuse à Hydra</h3>
+                        <div class="listing-location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Hydra, Alger</span>
+                        </div>
+                        <p>Chambre disponible dans un appartement de 4 chambres avec terrasse et vue mer. Idéal pour étudiant ou jeune professionnel.</p>
+                        <div style="display: flex; gap: 10px; margin-top: 15px;">
+                            <button class="btn" style="flex: 1; padding: 10px;">Contacter</button>
+                            <button class="btn btn-secondary" style="flex: 1; padding: 10px;">Visiter</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="empty-state">
+                    <i class="far fa-heart"></i>
+                    <h4>Vous n'avez pas d'autres favoris</h4>
+                    <p>Explorez les annonces et ajoutez-les à vos favoris</p>
+                    <button class="btn" style="margin-top: 20px;" id="explore-listings">Explorer les annonces</button>
+                </div>
+            </section>
+            
+            <!-- Section Chat -->
+            <section id="chat" class="section">
+                <h3 style="margin-bottom: 15px; color: var(--primary);">Messages</h3>
+                
+                <div class="chat-container" style="height: 500px;">
+                    <div class="chat-header">
+                        <div class="chat-avatar">KM</div>
+                        <div class="chat-contact-info">
+                            <h4>Karim M.</h4>
+                            <p>Colocation à Hydra</p>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-messages">
+                        <div class="message received">
+                            Bonjour ! Je suis intéressé par votre annonce. La chambre est-elle toujours disponible ?
+                        </div>
+                        <div class="message sent">
+                            Bonjour ! Oui, elle est toujours disponible. Vous pouvez visiter demain si vous voulez.
+                        </div>
+                        <div class="message received">
+                            Parfait ! À quelle heure serait-ce possible ?
+                        </div>
+                        <div class="message sent">
+                            Entre 15h et 18h. Ça vous convient ?
+                        </div>
+                        <div class="message received">
+                            Oui, 16h ça me va. Vous pouvez m'envoyer l'adresse exacte ?
+                        </div>
+                    </div>
+                    
+                    <div class="chat-input">
+                        <input type="text" placeholder="Tapez votre message..." id="chat-input">
+                        <button id="send-message">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 20px;">
+                    <h4 style="margin-bottom: 15px; color: var(--primary);">Conversations récentes</h4>
+                    <div class="listing-card" style="display: flex; align-items: center; padding: 15px;">
+                        <div class="chat-avatar" style="margin-right: 15px;">SM</div>
+                        <div style="flex: 1;">
+                            <h4 style="font-size: 1rem;">Sofia M.</h4>
+                            <p style="color: var(--gray); font-size: 0.9rem;">Dernier message: La visite est confirmée pour demain...</p>
+                        </div>
+                        <span style="color: var(--gray); font-size: 0.8rem;">14:30</span>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Section Publication (cachée dans la navigation mais accessible via bouton) -->
+            <section id="publication" class="section">
+                <h3 style="margin-bottom: 15px; color: var(--primary);">Publier une annonce</h3>
+                
+                <div class="publish-form">
+                    <div class="form-group">
+                        <label>Titre de l'annonce *</label>
+                        <input type="text" placeholder="Ex: Colocation spacieuse à Hydra" id="ad-title">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Description *</label>
+                        <textarea placeholder="Décrivez votre logement, l'ambiance, les colocataires..." id="ad-description"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Adresse *</label>
+                        <input type="text" placeholder="Adresse complète" id="ad-address">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Loyer mensuel (DA) *</label>
+                        <input type="number" placeholder="25000" id="ad-price">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Localisation sur la carte</label>
+                        <div style="display: flex; gap: 10px;">
+                            <input type="number" placeholder="Latitude" id="ad-lat" step="0.000001" value="36.7525">
+                            <input type="number" placeholder="Longitude" id="ad-lng" step="0.000001" value="3.04197">
+                        </div>
+                        <p style="font-size: 0.8rem; color: var(--gray); margin-top: 5px;">
+                            <i class="fas fa-info-circle"></i> Les coordonnées seront utilisées pour afficher votre annonce sur la carte
+                        </p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Charges incluses</label>
+                        <div class="filter-options">
+                            <span class="filter-option">Électricité</span>
+                            <span class="filter-option active">Eau</span>
+                            <span class="filter-option active">Internet</span>
+                            <span class="filter-option">Gardiennage</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Photos du logement *</label>
+                        <div class="photo-upload" id="photo-upload">
+                            <i class="fas fa-cloud-upload-alt" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                            <p>Cliquez pour télécharger des photos</p>
+                            <p style="font-size: 0.9rem;">JPG, PNG jusqu'à 5MB</p>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-full btn-secondary" id="publish-ad">Publier l'annonce</button>
+                    <p style="text-align: center; margin-top: 15px; color: var(--gray); font-size: 0.9rem;">La publication est gratuite</p>
+                </div>
+            </section>
+        </main>
+        
+        <!-- Bouton flottant pour publier -->
+        <div style="position: fixed; bottom: 20px; right: 20px; z-index: 100;">
+            <button class="btn btn-secondary" id="publish-btn" style="width: 60px; height: 60px; border-radius: 50%; font-size: 1.5rem; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);">
+                <i class="fas fa-plus"></i>
+            </button>
+        </div>
+        
+        <!-- Modal pour les détails de l'annonce -->
+        <div class="modal" id="listing-modal">
+            <div class="modal-content">
+                <button class="modal-close" id="close-modal">&times;</button>
+                <div class="listing-card" style="box-shadow: none; margin: 0;">
+                    <div class="listing-image" style="height: 250px; border-radius: var(--border-radius) var(--border-radius) 0 0;">
+                        <div class="listing-price">35 000 DA</div>
+                        <div class="favorite-icon active">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                    </div>
+                    <div class="listing-details">
+                        <h3 class="listing-title">Coloc spacieuse à Hydra</h3>
+                        <div class="listing-location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Hydra, Alger</span>
+                        </div>
+                        <p>Chambre disponible dans un appartement de 4 chambres avec terrasse et vue mer. L'appartement est entièrement meublé et équipé (climatisation, WiFi, machine à laver). Idéal pour étudiant ou jeune professionnel.</p>
+                        <div class="listing-features">
+                            <div class="feature">
+                                <i class="fas fa-bed"></i>
+                                <span>Chambre simple</span>
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-ruler-combined"></i>
+                                <span>18 m²</span>
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-users"></i>
+                                <span>3 colocataires</span>
+                            </div>
+                        </div>
+                        <div class="detail-features" style="margin-top: 20px;">
+                            <div class="detail-feature">
+                                <i class="fas fa-wifi"></i>
+                                <span>WiFi inclus</span>
+                            </div>
+                            <div class="detail-feature">
+                                <i class="fas fa-snowflake"></i>
+                                <span>Climatisation</span>
+                            </div>
+                            <div class="detail-feature">
+                                <i class="fas fa-car"></i>
+                                <span>Parking</span>
+                            </div>
+                            <div class="detail-feature">
+                                <i class="fas fa-tshirt"></i>
+                                <span>Machine à laver</span>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 10px; margin-top: 25px;">
+                            <button class="btn" style="flex: 1; padding: 12px;">Contacter</button>
+                            <button class="btn btn-secondary" style="flex: 1; padding: 12px;">Visiter</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Variables globales
+        let currentSection = 'accueil';
+        let favoriteListings = ['1']; // ID des annonces favorites
+        let map = null;
+        let markers = [];
+        
+        // Données des annonces (simulées)
+        const listingsData = [
+            {
+                id: 1,
+                title: "Coloc spacieuse à Hydra",
+                price: 35000,
+                location: "Hydra, Alger",
+                address: "12 Rue des Jardins, Hydra",
+                lat: 36.7525,
+                lng: 3.04197,
+                description: "Chambre disponible dans un appartement de 4 chambres avec terrasse et vue mer. Idéal pour étudiant ou jeune professionnel.",
+                type: "Appartement",
+                surface: 18,
+                rooms: 1,
+                roommates: 3,
+                features: ["Meublé", "WiFi", "Climatisation", "Parking"],
+                isFavorite: true
+            },
+            {
+                id: 2,
+                title: "Appartement moderne à Bab Ezzouar",
+                price: 28000,
+                location: "Bab Ezzouar, Alger",
+                address: "45 Avenue du 1er Novembre, Bab Ezzouar",
+                lat: 36.7095,
+                lng: 3.1821,
+                description: "Colocation dans un appartement neuf à proximité de l'université. Charges incluses. Environnement calme.",
+                type: "Appartement",
+                surface: 15,
+                rooms: 1,
+                roommates: 2,
+                features: ["Meublé", "WiFi", "Climatisation"],
+                isFavorite: false
+            },
+            {
+                id: 3,
+                title: "Colocation avec terrasse à El Biar",
+                price: 42000,
+                location: "El Biar, Alger",
+                address: "8 Rue Didouche Mourad, El Biar",
+                lat: 36.7645,
+                lng: 3.0421,
+                description: "Magnifique appartement avec grande terrasse et vue panoramique. Proche des commerces et transports.",
+                type: "Appartement",
+                surface: 22,
+                rooms: 1,
+                roommates: 2,
+                features: ["Meublé", "WiFi", "Climatisation", "Terrasse"],
+                isFavorite: false
+            },
+            {
+                id: 4,
+                title: "Maison de ville à Oran",
+                price: 32000,
+                location: "Sidi Maarouf, Oran",
+                address: "22 Boulevard de la Soummam, Sidi Maarouf",
+                lat: 35.6971,
+                lng: -0.6297,
+                description: "Colocation dans une maison de ville avec jardin. Ambiance conviviale, idéale pour étudiants.",
+                type: "Maison",
+                surface: 25,
+                rooms: 1,
+                roommates: 4,
+                features: ["Meublé", "WiFi", "Jardin"],
+                isFavorite: false
+            },
+            {
+                id: 5,
+                title: "Studio moderne à Constantine",
+                price: 25000,
+                location: "Centre-ville, Constantine",
+                address: "15 Rue de la République, Constantine",
+                lat: 36.3650,
+                lng: 6.6147,
+                description: "Studio disponible dans une résidence sécurisée. Idéal pour étudiant seul.",
+                type: "Studio",
+                surface: 12,
+                rooms: 1,
+                roommates: 1,
+                features: ["Meublé", "WiFi", "Climatisation", "Sécurité"],
+                isFavorite: false
+            }
+        ];
+        
+        // Initialisation au chargement
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialiser le slider de prix
+            const rentSlider = document.querySelector('input[type="range"]');
+            const rentValue = document.getElementById('rent-value');
+            
+            rentSlider.addEventListener('input', function() {
+                rentValue.textContent = new Intl.NumberFormat('fr-DZ').format(this.value) + ' DA';
+            });
+            
+            // Navigation entre sections
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    // Retirer la classe active de tous les éléments de navigation
+                    document.querySelectorAll('.nav-item').forEach(navItem => {
+                        navItem.classList.remove('active');
+                    });
+                    
+                    // Ajouter la classe active à l'élément cliqué
+                    this.classList.add('active');
+                    
+                    // Masquer toutes les sections
+                    document.querySelectorAll('.section').forEach(section => {
+                        section.classList.remove('active');
+                    });
+                    
+                    // Afficher la section correspondante
+                    const sectionId = this.getAttribute('data-section');
+                    document.getElementById(sectionId).classList.add('active');
+                    currentSection = sectionId;
+                    
+                    // Initialiser la carte si on est sur la section carte
+                    if (sectionId === 'carte' && !map) {
+                        initMap();
+                    }
+                });
+            });
+            
+            // Gestion des favoris
+            document.querySelectorAll('.favorite-icon').forEach(icon => {
+                icon.addEventListener('click', function(e) {
+                    e.stopPropagation(); // Empêcher la propagation à la carte
+                    this.classList.toggle('active');
+                    const heartIcon = this.querySelector('i');
+                    
+                    if (this.classList.contains('active')) {
+                        heartIcon.classList.remove('far');
+                        heartIcon.classList.add('fas');
+                    } else {
+                        heartIcon.classList.remove('fas');
+                        heartIcon.classList.add('far');
+                    }
+                });
+            });
+            
+            // Bouton "Commencer la recherche"
+            document.getElementById('start-search').addEventListener('click', function() {
+                // Activer la section recherche
+                document.querySelectorAll('.nav-item').forEach(navItem => {
+                    navItem.classList.remove('active');
+                });
+                
+                document.querySelector('.nav-item[data-section="recherche"]').classList.add('active');
+                
+                // Masquer toutes les sections
+                document.querySelectorAll('.section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                
+                // Afficher la section recherche
+                document.getElementById('recherche').classList.add('active');
+                currentSection = 'recherche';
+            });
+            
+            // Bouton de publication
+            document.getElementById('publish-btn').addEventListener('click', function() {
+                // Masquer toutes les sections
+                document.querySelectorAll('.section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                
+                // Afficher la section publication
+                document.getElementById('publication').classList.add('active');
+                currentSection = 'publication';
+                
+                // Scroll vers le haut
+                document.querySelector('.app-content').scrollTop = 0;
+            });
+            
+            // Options de filtre
+            document.querySelectorAll('.filter-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    this.classList.toggle('active');
+                });
+            });
+            
+            // Envoyer un message dans le chat
+            document.getElementById('send-message').addEventListener('click', sendMessage);
+            document.getElementById('chat-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+            
+            function sendMessage() {
+                const input = document.getElementById('chat-input');
+                const messageText = input.value.trim();
+                
+                if (messageText) {
+                    const messagesContainer = document.querySelector('.chat-messages');
+                    
+                    const messageDiv = document.createElement('div');
+                    messageDiv.classList.add('message', 'sent');
+                    messageDiv.textContent = messageText;
+                    
+                    messagesContainer.appendChild(messageDiv);
+                    input.value = '';
+                    
+                    // Faire défiler vers le bas
+                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                    
+                    // Simulation d'une réponse automatique après 1 seconde
+                    setTimeout(() => {
+                        const autoReply = document.createElement('div');
+                        autoReply.classList.add('message', 'received');
+                        autoReply.textContent = "Merci pour votre message. Je vous répondrai dès que possible.";
+                        messagesContainer.appendChild(autoReply);
+                        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                    }, 1000);
+                }
+            }
+            
+            // Appliquer les filtres
+            document.getElementById('apply-filters').addEventListener('click', function() {
+                alert('Filtres appliqués ! Affichage des résultats correspondants...');
+                // Ici, on filtrerait normalement les annonces
+            });
+            
+            // Bouton "Explorer les annonces"
+            document.getElementById('explore-listings').addEventListener('click', function() {
+                document.querySelectorAll('.nav-item').forEach(navItem => {
+                    navItem.classList.remove('active');
+                });
+                
+                document.querySelector('.nav-item[data-section="accueil"]').classList.add('active');
+                
+                document.querySelectorAll('.section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                
+                document.getElementById('accueil').classList.add('active');
+                currentSection = 'accueil';
+            });
+            
+            // Fermer le modal
+            document.getElementById('close-modal').addEventListener('click', function() {
+                document.getElementById('listing-modal').classList.remove('active');
+            });
+            
+            // Ouvrir les détails d'une annonce
+            document.querySelectorAll('.listing-card').forEach(card => {
+                card.addEventListener('click', function(e) {
+                    // Ne pas ouvrir le modal si on clique sur le bouton favori
+                    if (!e.target.closest('.favorite-icon')) {
+                        const listingId = this.getAttribute('data-listing-id');
+                        showListingDetails(listingId);
+                    }
+                });
+            });
+            
+            // Publier une annonce
+            document.getElementById('publish-ad').addEventListener('click', function() {
+                const title = document.getElementById('ad-title').value;
+                const description = document.getElementById('ad-description').value;
+                const address = document.getElementById('ad-address').value;
+                const price = document.getElementById('ad-price').value;
+                const lat = document.getElementById('ad-lat').value;
+                const lng = document.getElementById('ad-lng').value;
+                
+                if (!title || !description || !address || !price) {
+                    alert('Veuillez remplir tous les champs obligatoires (*)');
+                    return;
+                }
+                
+                // Ajouter la nouvelle annonce aux données
+                const newId = listingsData.length + 1;
+                const newListing = {
+                    id: newId,
+                    title: title,
+                    price: parseInt(price),
+                    location: address,
+                    address: address,
+                    lat: parseFloat(lat),
+                    lng: parseFloat(lng),
+                    description: description,
+                    type: "Appartement",
+                    surface: 15,
+                    rooms: 1,
+                    roommates: 3,
+                    features: ["Meublé"],
+                    isFavorite: false
+                };
+                
+                listingsData.push(newListing);
+                
+                // Mettre à jour la carte si elle est initialisée
+                if (map) {
+                    addMarkerToMap(newListing);
+                }
+                
+                alert('Annonce publiée avec succès ! Elle est maintenant visible sur la carte.');
+                
+                // Réinitialiser le formulaire
+                document.getElementById('ad-title').value = '';
+                document.getElementById('ad-description').value = '';
+                document.getElementById('ad-address').value = '';
+                document.getElementById('ad-price').value = '';
+                
+                // Revenir à l'accueil
+                document.querySelectorAll('.nav-item').forEach(navItem => {
+                    navItem.classList.remove('active');
+                });
+                
+                document.querySelector('.nav-item[data-section="accueil"]').classList.add('active');
+                
+                document.querySelectorAll('.section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                
+                document.getElementById('accueil').classList.add('active');
+                currentSection = 'accueil';
+            });
+            
+            // Initialisation de la carte (si on est déjà sur la section carte)
+            if (document.getElementById('carte').classList.contains('active')) {
+                initMap();
+            }
+            
+            // Simulation de données
+            console.log("Application Coloco initialisée avec succès !");
+            console.log("Fonctionnalités disponibles :");
+            console.log("1. Navigation entre sections");
+            console.log("2. Filtres de recherche avancés");
+            console.log("3. Gestion des favoris");
+            console.log("4. Chat en temps réel");
+            console.log("5. Publication d'annonces");
+            console.log("6. Carte interactive avec marqueurs");
+        });
+        
+        // Initialisation de la carte
+        function initMap() {
+            // Centre sur Alger par défaut
+            const algerCenter = [36.7525, 3.04197];
+            
+            // Créer la carte
+            map = L.map('map').setView(algerCenter, 12);
+            
+            // Ajouter les tuiles OpenStreetMap
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                maxZoom: 18,
+            }).addTo(map);
+            
+            // Ajouter les marqueurs pour chaque annonce
+            listingsData.forEach(listing => {
+                addMarkerToMap(listing);
+            });
+            
+            // Contrôles de la carte
+            document.getElementById('locate-me').addEventListener('click', function() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function(position) {
+                        const userLat = position.coords.latitude;
+                        const userLng = position.coords.longitude;
+                        
+                        map.setView([userLat, userLng], 14);
+                        
+                        // Ajouter un marqueur pour la position de l'utilisateur
+                        L.marker([userLat, userLng], {
+                            icon: L.divIcon({
+                                html: '<div class="custom-marker" style="background-color: #28a745;"><i class="fas fa-user"></i></div>',
+                                iconSize: [40, 40],
+                                className: 'custom-marker-container'
+                            })
+                        }).addTo(map)
+                        .bindPopup('Vous êtes ici')
+                        .openPopup();
+                    });
+                } else {
+                    alert("La géolocalisation n'est pas supportée par votre navigateur.");
+                }
+            });
+            
+            document.getElementById('zoom-in').addEventListener('click', function() {
+                map.zoomIn();
+            });
+            
+            document.getElementById('zoom-out').addEventListener('click', function() {
+                map.zoomOut();
+            });
+        }
+        
+        // Ajouter un marqueur à la carte
+        function addMarkerToMap(listing) {
+            // Créer un marqueur personnalisé
+            const marker = L.marker([listing.lat, listing.lng], {
+                icon: L.divIcon({
+                    html: `<div class="custom-marker" style="background-color: ${listing.isFavorite ? '#ff4757' : 'var(--primary)'};">
+                              <i class="fas fa-home"></i>
+                           </div>`,
+                    iconSize: [40, 40],
+                    className: 'custom-marker-container'
+                })
+            }).addTo(map);
+            
+            // Ajouter un popup au marqueur
+            marker.bindPopup(`
+                <div class="marker-popup">
+                    <div class="popup-title">${listing.title}</div>
+                    <div class="popup-price">${listing.price.toLocaleString('fr-DZ')} DA</div>
+                    <div class="popup-location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>${listing.location}</span>
+                    </div>
+                    <p>${listing.description.substring(0, 100)}...</p>
+                    <button class="popup-btn" onclick="showListingDetails(${listing.id})">Voir les détails</button>
+                </div>
+            `);
+            
+            // Stocker le marqueur
+            markers.push(marker);
+            
+            // Ouvrir le popup au clic
+            marker.on('click', function() {
+                this.openPopup();
+            });
+        }
+        
+        // Afficher les détails d'une annonce
+        function showListingDetails(listingId) {
+            const listing = listingsData.find(l => l.id == listingId);
+            
+            if (!listing) return;
+            
+            // Mettre à jour le modal avec les données de l'annonce
+            const modal = document.getElementById('listing-modal');
+            const modalContent = modal.querySelector('.modal-content');
+            
+            modalContent.querySelector('.listing-title').textContent = listing.title;
+            modalContent.querySelector('.listing-price').textContent = listing.price.toLocaleString('fr-DZ') + ' DA';
+            modalContent.querySelector('.listing-location span').textContent = listing.location;
+            modalContent.querySelector('.listing-details p').textContent = listing.description;
+            modalContent.querySelector('.feature:nth-child(2) span').textContent = listing.surface + ' m²';
+            modalContent.querySelector('.feature:nth-child(3) span').textContent = listing.roommates + ' colocataires';
+            
+            // Mettre à jour l'image de fond (simulée)
+            const imageUrls = [
+                'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+            ];
+            
+            modalContent.querySelector('.listing-image').style.backgroundImage = `url('${imageUrls[listingId % imageUrls.length]}')`;
+            
+            // Afficher le modal
+            modal.classList.add('active');
+            
+            // Centrer la carte sur cette annonce si on est sur la section carte
+            if (currentSection === 'carte' && map) {
+                map.setView([listing.lat, listing.lng], 14);
+                
+                // Ouvrir le popup du marqueur correspondant
+                markers.forEach(marker => {
+                    const markerPos = marker.getLatLng();
+                    if (markerPos.lat === listing.lat && markerPos.lng === listing.lng) {
+                        marker.openPopup();
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+</html>
