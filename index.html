@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -133,6 +134,37 @@
             background-color: rgba(255, 255, 255, 0.1);
         }
         
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn-auth {
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: 2px solid white;
+            background: transparent;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .btn-auth:hover {
+            background-color: white;
+            color: var(--primary);
+        }
+        
+        .btn-auth.primary {
+            background-color: white;
+            color: var(--primary);
+            border: none;
+        }
+        
+        .btn-auth.primary:hover {
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+        
         .user-avatar {
             width: 40px;
             height: 40px;
@@ -237,6 +269,300 @@
             cursor: pointer;
             font-size: 1.2rem;
             padding: 5px;
+        }
+        
+        /* Overlay et modal d'authentification */
+        .auth-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            backdrop-filter: blur(5px);
+        }
+        
+        .auth-overlay.active {
+            display: flex;
+            animation: fadeIn 0.3s;
+        }
+        
+        .auth-container {
+            background-color: var(--light);
+            border-radius: var(--border-radius);
+            width: 100%;
+            max-width: 450px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            position: relative;
+            transition: var(--transition);
+        }
+        
+        .dark-mode .auth-container {
+            background-color: #4a5568;
+        }
+        
+        .auth-header {
+            padding: 25px 30px 15px;
+            text-align: center;
+        }
+        
+        .auth-header h2 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .auth-header p {
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+        
+        .auth-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .auth-tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            background: none;
+            border: none;
+            color: var(--gray);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            border-bottom: 3px solid transparent;
+        }
+        
+        .auth-tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+        
+        .auth-content {
+            padding: 30px;
+        }
+        
+        .auth-form {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+        
+        .auth-form.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--dark);
+            font-weight: 500;
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--light-gray);
+            border-radius: 8px;
+            font-size: 1rem;
+            background-color: white;
+            color: var(--dark);
+            transition: var(--transition);
+        }
+        
+        .dark-mode .form-group input,
+        .dark-mode .form-group select {
+            background-color: #2d3748;
+            border-color: #718096;
+            color: var(--dark);
+        }
+        
+        .form-group input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.2);
+        }
+        
+        .form-group small {
+            display: block;
+            margin-top: 5px;
+            color: var(--gray);
+            font-size: 0.85rem;
+        }
+        
+        .password-strength {
+            height: 5px;
+            background-color: var(--light-gray);
+            border-radius: 5px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+        
+        .password-strength-bar {
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 5px;
+        }
+        
+        .password-strength-weak {
+            background-color: var(--danger);
+            width: 33%;
+        }
+        
+        .password-strength-medium {
+            background-color: var(--warning);
+            width: 66%;
+        }
+        
+        .password-strength-strong {
+            background-color: var(--success);
+            width: 100%;
+        }
+        
+        .verification-code {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        
+        .verification-code input {
+            width: 50px;
+            height: 60px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border: 2px solid var(--light-gray);
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+        
+        .verification-code input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.2);
+        }
+        
+        .code-input-filled {
+            border-color: var(--success) !important;
+        }
+        
+        .resend-code {
+            text-align: center;
+            margin-top: 15px;
+        }
+        
+        .resend-code button {
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            font-size: 0.9rem;
+            text-decoration: underline;
+        }
+        
+        .resend-code button:hover {
+            color: var(--primary-dark);
+        }
+        
+        .resend-code button:disabled {
+            color: var(--gray);
+            cursor: not-allowed;
+            text-decoration: none;
+        }
+        
+        .terms-checkbox {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .terms-checkbox input {
+            margin-top: 4px;
+        }
+        
+        .terms-checkbox label {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+        
+        .terms-checkbox a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+        
+        .terms-checkbox a:hover {
+            text-decoration: underline;
+        }
+        
+        .auth-footer {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--light-gray);
+        }
+        
+        .auth-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .auth-footer a:hover {
+            text-decoration: underline;
+        }
+        
+        .auth-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--light-gray);
+            border: none;
+            font-size: 1.2rem;
+            color: var(--gray);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+        
+        .auth-close:hover {
+            background-color: var(--danger);
+            color: white;
+        }
+        
+        /* Badge de vérification */
+        .verified-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background-color: rgba(40, 167, 69, 0.1);
+            color: var(--success);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
+        .verified-badge i {
+            font-size: 0.9rem;
         }
         
         /* Navigation */
@@ -380,774 +706,29 @@
             color: white;
         }
         
-        /* Rating stars */
-        .rating {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            margin: 5px 0;
+        .btn-success {
+            background-color: var(--success);
         }
         
-        .rating-stars {
-            display: flex;
-            gap: 2px;
+        .btn-success:hover {
+            background-color: #218838;
         }
         
-        .rating-star {
-            color: #ddd;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: color 0.2s;
-        }
-        
-        .rating-star.filled {
-            color: var(--warning);
-        }
-        
-        .rating-value {
-            font-size: 0.9rem;
-            color: var(--gray);
-            margin-left: 5px;
-        }
-        
-        /* Share button */
-        .share-btn {
-            background: none;
-            border: none;
-            color: var(--primary);
-            cursor: pointer;
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            padding: 5px 10px;
-            border-radius: 5px;
-            transition: var(--transition);
-        }
-        
-        .share-btn:hover {
-            background-color: var(--light-gray);
-        }
-        
-        /* Filtres */
-        .filters-container {
-            background-color: var(--light);
-            border-radius: var(--border-radius);
-            padding: 20px;
-            box-shadow: var(--shadow);
-            margin-bottom: 20px;
-            transition: var(--transition);
-        }
-        
-        .dark-mode .filters-container {
-            background-color: #4a5568;
-        }
-        
-        .filters-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        
-        .filters-header h3 {
-            color: var(--primary);
-        }
-        
-        .filter-group {
-            margin-bottom: 15px;
-        }
-        
-        .filter-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: var(--dark);
-            font-weight: 500;
-        }
-        
-        .filter-group input, .filter-group select {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid var(--light-gray);
-            border-radius: 8px;
-            font-size: 1rem;
-            background-color: white;
-            color: var(--dark);
-            transition: var(--transition);
-        }
-        
-        .dark-mode .filter-group input,
-        .dark-mode .filter-group select {
-            background-color: #2d3748;
-            border-color: #718096;
-            color: var(--dark);
-        }
-        
-        .filter-options {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 10px;
-        }
-        
-        .filter-option {
-            padding: 8px 15px;
-            background-color: var(--light-gray);
-            border-radius: 20px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .filter-option.active {
-            background-color: var(--primary);
-            color: white;
-        }
-        
-        /* Annonces */
-        .listings-container {
-            margin-top: 20px;
-        }
-        
-        .listing-card {
-            background-color: var(--light);
-            border-radius: var(--border-radius);
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            margin-bottom: 20px;
-            transition: var(--transition);
-            cursor: pointer;
-            position: relative;
-        }
-        
-        .listing-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-        }
-        
-        .listing-image {
-            height: 200px;
-            background-color: var(--light-gray);
-            background-size: cover;
-            background-position: center;
-            position: relative;
-        }
-        
-        .listing-price {
+        /* Annonces vérifiées */
+        .listing-verified {
             position: absolute;
             top: 15px;
-            right: 15px;
-            background-color: var(--secondary);
+            left: 60px;
+            background-color: rgba(40, 167, 69, 0.9);
             color: white;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-weight: bold;
-            font-size: 1.1rem;
-        }
-        
-        .listing-details {
-            padding: 20px;
-        }
-        
-        .listing-title {
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-            color: var(--primary);
-        }
-        
-        .listing-location {
-            color: var(--gray);
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        
-        .listing-features {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 15px;
-            font-size: 0.9rem;
-            color: var(--gray);
-        }
-        
-        .feature {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        
-        .listing-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid var(--light-gray);
-        }
-        
-        .favorite-icon {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            color: white;
-            background-color: rgba(0, 0, 0, 0.3);
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: var(--transition);
-            z-index: 2;
-        }
-        
-        .favorite-icon.active {
-            color: #ff4757;
-        }
-        
-        /* Section Carte */
-        .map-section {
-            padding: 0;
-            height: 100%;
-        }
-        
-        .map-header {
-            padding: 15px 20px;
-            background-color: var(--light);
-            border-bottom: 1px solid var(--light-gray);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: var(--transition);
-        }
-        
-        .dark-mode .map-header {
-            background-color: #4a5568;
-        }
-        
-        .map-header h3 {
-            color: var(--primary);
-        }
-        
-        .map-container {
-            height: calc(100vh - 220px);
-            width: 100%;
-            border-radius: 0;
-        }
-        
-        /* Carte Leaflet */
-        #map {
-            height: 100%;
-            width: 100%;
-            z-index: 1;
-        }
-        
-        /* Contrôles de la carte */
-        .map-controls {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        
-        .map-control-btn {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            background-color: white;
-            border: none;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            color: var(--primary);
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        
-        .map-control-btn:hover {
-            background-color: var(--primary);
-            color: white;
-        }
-        
-        /* Marqueurs de carte personnalisés */
-        .custom-marker {
-            background-color: var(--primary);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            border: 3px solid white;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        
-        .custom-marker:hover {
-            transform: scale(1.2);
-            background-color: var(--secondary);
-        }
-        
-        .custom-marker i {
-            font-size: 1.2rem;
-        }
-        
-        /* Popup des marqueurs */
-        .leaflet-popup-content {
-            min-width: 200px;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        .marker-popup {
-            padding: 10px;
-        }
-        
-        .popup-title {
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: var(--primary);
-            margin-bottom: 8px;
-        }
-        
-        .popup-price {
-            color: var(--secondary);
-            font-weight: bold;
-            font-size: 1.2rem;
-            margin-bottom: 8px;
-        }
-        
-        .popup-location {
-            color: var(--gray);
-            font-size: 0.9rem;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        
-        .popup-btn {
-            display: block;
-            width: 100%;
-            padding: 8px 15px;
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            text-align: center;
-            text-decoration: none;
-        }
-        
-        /* Section Profil */
-        .profile-header {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            background-color: var(--light);
-            border-radius: var(--border-radius);
-            padding: 25px;
-            margin-bottom: 20px;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-        }
-        
-        .dark-mode .profile-header {
-            background-color: #4a5568;
-        }
-        
-        .avatar-large {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            font-weight: bold;
-        }
-        
-        .profile-info {
-            flex: 1;
-        }
-        
-        .profile-info h3 {
-            font-size: 1.5rem;
-            margin-bottom: 5px;
-            color: var(--primary);
-        }
-        
-        .profile-info p {
-            color: var(--gray);
-            margin-bottom: 5px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .profile-rating {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            margin-top: 10px;
-        }
-        
-        .profile-rating i {
-            color: var(--warning);
-        }
-        
-        .profile-rating span {
-            font-size: 0.9rem;
-            color: var(--gray);
-            margin-left: 5px;
-        }
-        
-        .profile-sections {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        
-        .profile-section {
-            background-color: var(--light);
-            border-radius: var(--border-radius);
-            padding: 25px;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-        }
-        
-        .dark-mode .profile-section {
-            background-color: #4a5568;
-        }
-        
-        .profile-section h4 {
-            color: var(--primary);
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .history-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid var(--light-gray);
-        }
-        
-        .history-item:last-child {
-            border-bottom: none;
-        }
-        
-        .status {
             padding: 5px 10px;
             border-radius: 20px;
             font-size: 0.8rem;
             font-weight: 600;
-        }
-        
-        .status.confirmed {
-            background-color: rgba(40, 167, 69, 0.1);
-            color: var(--success);
-        }
-        
-        .status.pending {
-            background-color: rgba(255, 193, 7, 0.1);
-            color: var(--warning);
-        }
-        
-        .preference {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid var(--light-gray);
-        }
-        
-        .preference:last-child {
-            border-bottom: none;
-        }
-        
-        /* Toggle switch */
-        .toggle-switch {
-            position: relative;
-            display: inline-block;
-            width: 50px;
-            height: 24px;
-        }
-        
-        .toggle-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: .4s;
-            border-radius: 34px;
-        }
-        
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 16px;
-            width: 16px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-        
-        input:checked + .slider {
-            background-color: var(--primary);
-        }
-        
-        input:checked + .slider:before {
-            transform: translateX(26px);
-        }
-        
-        /* Section Chat */
-        .chat-container {
-            display: flex;
-            flex-direction: column;
-            height: 500px;
-            background-color: var(--light);
-            border-radius: var(--border-radius);
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-        }
-        
-        .dark-mode .chat-container {
-            background-color: #4a5568;
-        }
-        
-        .chat-header {
-            background-color: var(--primary);
-            color: white;
-            padding: 15px 20px;
             display: flex;
             align-items: center;
-            gap: 15px;
-        }
-        
-        .chat-avatar {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
-        
-        .chat-contact-info h4 {
-            font-size: 1.1rem;
-            margin-bottom: 3px;
-        }
-        
-        .chat-contact-info p {
-            font-size: 0.9rem;
-            opacity: 0.8;
-        }
-        
-        .chat-messages {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        
-        .message {
-            max-width: 80%;
-            padding: 12px 15px;
-            border-radius: 18px;
-            line-height: 1.4;
-        }
-        
-        .message.received {
-            align-self: flex-start;
-            background-color: var(--light-gray);
-            border-bottom-left-radius: 5px;
-            color: var(--dark);
-        }
-        
-        .message.sent {
-            align-self: flex-end;
-            background-color: var(--primary);
-            color: white;
-            border-bottom-right-radius: 5px;
-        }
-        
-        .chat-input {
-            display: flex;
-            padding: 15px;
-            background-color: var(--light-gray);
-            gap: 10px;
-            transition: var(--transition);
-        }
-        
-        .chat-input input {
-            flex: 1;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 25px;
-            font-size: 1rem;
-            background-color: white;
-            color: var(--dark);
-        }
-        
-        .dark-mode .chat-input input {
-            background-color: #2d3748;
-            border-color: #718096;
-            color: var(--dark);
-        }
-        
-        .chat-input button {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 1.2rem;
-        }
-        
-        /* Section Publication */
-        .publish-form {
-            background-color: var(--light);
-            border-radius: var(--border-radius);
-            padding: 25px;
-            box-shadow: var(--shadow);
-            margin-bottom: 20px;
-            transition: var(--transition);
-        }
-        
-        .dark-mode .publish-form {
-            background-color: #4a5568;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: var(--dark);
-            font-weight: 500;
-        }
-        
-        .form-group input, .form-group select, .form-group textarea {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid var(--light-gray);
-            border-radius: 8px;
-            font-size: 1rem;
-            background-color: white;
-            color: var(--dark);
-            transition: var(--transition);
-        }
-        
-        .dark-mode .form-group input,
-        .dark-mode .form-group select,
-        .dark-mode .form-group textarea {
-            background-color: #2d3748;
-            border-color: #718096;
-            color: var(--dark);
-        }
-        
-        .form-group textarea {
-            min-height: 120px;
-            resize: vertical;
-        }
-        
-        .photo-upload {
-            border: 2px dashed var(--light-gray);
-            border-radius: 8px;
-            padding: 30px 20px;
-            text-align: center;
-            color: var(--gray);
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        
-        .photo-upload:hover {
-            border-color: var(--primary);
-            color: var(--primary);
-        }
-        
-        /* Section Favoris */
-        .empty-state {
-            text-align: center;
-            padding: 50px 20px;
-            color: var(--gray);
-        }
-        
-        .empty-state i {
-            font-size: 4rem;
-            margin-bottom: 20px;
-            color: var(--light-gray);
-        }
-        
-        /* Barre de recherche */
-        .search-bar {
-            padding: 15px 20px;
-            background-color: var(--light);
-            display: flex;
-            gap: 10px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
-            margin-bottom: 20px;
-            transition: var(--transition);
-        }
-        
-        .dark-mode .search-bar {
-            background-color: #4a5568;
-        }
-        
-        .search-input {
-            flex: 1;
-            padding: 12px 15px;
-            border: 1px solid var(--light-gray);
-            border-radius: 8px;
-            font-size: 1rem;
-            background-color: white;
-            color: var(--dark);
-        }
-        
-        .dark-mode .search-input {
-            background-color: #2d3748;
-            border-color: #718096;
-            color: var(--dark);
+            gap: 5px;
+            z-index: 1;
         }
         
         /* Modal pour les détails */
@@ -1169,120 +750,25 @@
             display: flex;
         }
         
-        .modal-content {
-            background-color: var(--light);
-            border-radius: var(--border-radius);
-            width: 100%;
-            max-width: 500px;
-            max-height: 90vh;
-            overflow-y: auto;
-            position: relative;
-            transition: var(--transition);
-        }
-        
-        .dark-mode .modal-content {
-            background-color: #4a5568;
-        }
-        
-        .modal-close {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: var(--light);
-            border: none;
-            font-size: 1.5rem;
-            color: var(--gray);
-            cursor: pointer;
-            z-index: 10;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition);
-        }
-        
-        .dark-mode .modal-close {
-            background-color: #2d3748;
-        }
-        
-        /* Pagination */
-        .pagination {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            margin-top: 30px;
-            padding: 20px 0;
-        }
-        
-        .pagination-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: var(--light);
-            border: 1px solid var(--light-gray);
-            color: var(--dark);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        
-        .pagination-btn.active {
-            background-color: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-        
-        .pagination-btn:hover:not(.disabled) {
-            background-color: var(--light-gray);
-        }
-        
-        .pagination-btn.disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        
-        /* Loading state */
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid var(--light-gray);
-            border-top-color: var(--primary);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
         /* Responsive */
         @media (max-width: 768px) {
-            .hero h2 {
-                font-size: 1.5rem;
+            .auth-container {
+                max-width: 95%;
             }
             
-            .detail-features {
-                grid-template-columns: 1fr;
+            .verification-code input {
+                width: 40px;
+                height: 50px;
+                font-size: 1.2rem;
             }
             
-            .map-container {
-                height: calc(100vh - 200px);
+            .header-controls {
+                gap: 8px;
             }
             
-            .profile-header {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .toast {
-                min-width: calc(100vw - 40px);
-                right: 10px;
+            .btn-auth {
+                padding: 6px 12px;
+                font-size: 0.9rem;
             }
         }
     </style>
@@ -1290,6 +776,155 @@
 <body>
     <!-- Toast container -->
     <div class="toast-container"></div>
+    
+    <!-- Overlay d'authentification -->
+    <div class="auth-overlay" id="auth-overlay">
+        <div class="auth-container">
+            <button class="auth-close" id="close-auth">&times;</button>
+            
+            <div class="auth-header">
+                <h2>Bienvenue sur Coloco</h2>
+                <p>Rejoignez notre communauté de colocation</p>
+            </div>
+            
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="login">Connexion</button>
+                <button class="auth-tab" data-tab="register">Inscription</button>
+            </div>
+            
+            <!-- Formulaire de connexion -->
+            <div class="auth-content">
+                <form id="login-form" class="auth-form active">
+                    <div class="form-group">
+                        <label for="login-email">Adresse email</label>
+                        <input type="email" id="login-email" placeholder="votre@email.com" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="login-password">Mot de passe</label>
+                        <input type="password" id="login-password" placeholder="Votre mot de passe" required>
+                        <small><a href="#" id="forgot-password">Mot de passe oublié ?</a></small>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-full">Se connecter</button>
+                    
+                    <div class="auth-footer">
+                        <p>Pas encore de compte ? <a href="#" id="switch-to-register">S'inscrire</a></p>
+                    </div>
+                </form>
+                
+                <!-- Formulaire d'inscription -->
+                <form id="register-form" class="auth-form">
+                    <div class="form-group">
+                        <label for="register-name">Nom complet</label>
+                        <input type="text" id="register-name" placeholder="Votre nom et prénom" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="register-email">Adresse email</label>
+                        <input type="email" id="register-email" placeholder="votre@email.com" required>
+                        <small>Nous vous enverrons un code de vérification</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="register-phone">Téléphone</label>
+                        <input type="tel" id="register-phone" placeholder="+213 XX XX XX XX" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="register-password">Mot de passe</label>
+                        <input type="password" id="register-password" placeholder="Créez un mot de passe sécurisé" required>
+                        <div class="password-strength">
+                            <div class="password-strength-bar" id="password-strength-bar"></div>
+                        </div>
+                        <small>Minimum 8 caractères avec chiffres et lettres</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="register-confirm">Confirmer le mot de passe</label>
+                        <input type="password" id="register-confirm" placeholder="Retapez votre mot de passe" required>
+                    </div>
+                    
+                    <div class="terms-checkbox">
+                        <input type="checkbox" id="accept-terms" required>
+                        <label for="accept-terms">
+                            J'accepte les <a href="#">conditions d'utilisation</a> et la <a href="#">politique de confidentialité</a>
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-full btn-success">S'inscrire</button>
+                    
+                    <div class="auth-footer">
+                        <p>Déjà un compte ? <a href="#" id="switch-to-login">Se connecter</a></p>
+                    </div>
+                </form>
+                
+                <!-- Formulaire de vérification -->
+                <form id="verify-form" class="auth-form">
+                    <div class="form-group">
+                        <h3 style="text-align: center; color: var(--primary); margin-bottom: 20px;">Vérification par email</h3>
+                        <p style="text-align: center; color: var(--gray); margin-bottom: 20px;">
+                            Nous avons envoyé un code à 6 chiffres à l'adresse :<br>
+                            <strong id="verification-email"></strong>
+                        </p>
+                        
+                        <div class="verification-code">
+                            <input type="text" maxlength="1" data-index="0" class="code-input">
+                            <input type="text" maxlength="1" data-index="1" class="code-input">
+                            <input type="text" maxlength="1" data-index="2" class="code-input">
+                            <input type="text" maxlength="1" data-index="3" class="code-input">
+                            <input type="text" maxlength="1" data-index="4" class="code-input">
+                            <input type="text" maxlength="1" data-index="5" class="code-input">
+                        </div>
+                        
+                        <div class="resend-code">
+                            <p style="color: var(--gray); margin-bottom: 10px;">Vous n'avez pas reçu le code ?</p>
+                            <button type="button" id="resend-code-btn">Renvoyer le code <span id="countdown">(60s)</span></button>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-full btn-success">Vérifier mon compte</button>
+                    
+                    <div class="auth-footer">
+                        <button type="button" class="btn btn-outline btn-full" id="change-email">Changer d'email</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal pour les détails de l'annonce -->
+    <div class="modal" id="listing-modal">
+        <div class="modal-content" style="background-color: var(--light); border-radius: var(--border-radius); width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; position: relative; transition: var(--transition);">
+            <button class="auth-close" id="close-modal">&times;</button>
+            <div class="listing-card" style="box-shadow: none; margin: 0;">
+                <div class="listing-image" style="height: 250px; border-radius: var(--border-radius) var(--border-radius) 0 0; position: relative;">
+                    <div class="listing-price">35 000 DA</div>
+                    <div class="favorite-icon active">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <div class="listing-verified">
+                        <i class="fas fa-check-circle"></i> Vérifiée
+                    </div>
+                </div>
+                <div class="listing-details" style="padding: 20px;">
+                    <h3 class="listing-title">Coloc spacieuse à Hydra</h3>
+                    <div class="listing-location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Hydra, Alger</span>
+                        <span class="verified-badge">
+                            <i class="fas fa-check-circle"></i> Propriétaire vérifié
+                        </span>
+                    </div>
+                    <p>Chambre disponible dans un appartement de 4 chambres avec terrasse et vue mer. L'appartement est entièrement meublé et équipé (climatisation, WiFi, machine à laver). Idéal pour étudiant ou jeune professionnel.</p>
+                    <div style="display: flex; gap: 10px; margin-top: 25px;">
+                        <button class="btn" style="flex: 1; padding: 12px;">Contacter</button>
+                        <button class="btn btn-secondary" style="flex: 1; padding: 12px;">Visiter</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <div class="app-container">
         <!-- En-tête de l'application -->
@@ -1302,8 +937,17 @@
                 <button class="theme-toggle" id="theme-toggle" aria-label="Changer de thème">
                     <i class="fas fa-moon"></i>
                 </button>
-                <div class="user-avatar" id="user-profile-btn">
-                    <span>YA</span>
+                
+                <!-- Afficher les boutons de connexion ou l'avatar selon l'état -->
+                <div id="auth-buttons" class="auth-buttons">
+                    <button class="btn-auth" id="login-btn">Connexion</button>
+                    <button class="btn-auth primary" id="register-btn">Inscription</button>
+                </div>
+                
+                <div id="user-menu" style="display: none;">
+                    <div class="user-avatar" id="user-profile-btn">
+                        <span>YA</span>
+                    </div>
                 </div>
             </div>
         </header>
@@ -1340,9 +984,9 @@
                     <button class="btn btn-secondary" id="start-search">Commencer la recherche</button>
                 </div>
                 
-                <div class="filters-container">
-                    <div class="filters-header">
-                        <h3>Filtres rapides</h3>
+                <div class="filters-container" style="background-color: var(--light); border-radius: var(--border-radius); padding: 20px; box-shadow: var(--shadow); margin-bottom: 20px; transition: var(--transition);">
+                    <div class="filters-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h3 style="color: var(--primary);">Filtres rapides</h3>
                         <span class="filter-count">4 filtres</span>
                     </div>
                     
@@ -1368,7 +1012,7 @@
                     
                     <div class="filter-group">
                         <label>Équipements</label>
-                        <div class="filter-options">
+                        <div class="filter-options" style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px;">
                             <span class="filter-option active">Meublé</span>
                             <span class="filter-option">WiFi</span>
                             <span class="filter-option">Climatisation</span>
@@ -1380,179 +1024,95 @@
                 </div>
                 
                 <div class="listings-container">
-                    <h3 style="margin-bottom: 15px; color: var(--primary);">Annonces récentes</h3>
+                    <h3 style="margin-bottom: 15px; color: var(--primary);">Annonces vérifiées récentes</h3>
                     
                     <!-- Annonce 1 -->
-                    <div class="listing-card" data-listing-id="1">
-                        <div class="listing-image" style="background-image: url('https://images.unsplash.com/photo-1555854877-bab0e564b8d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
-                            <div class="listing-price">35 000 DA</div>
-                            <div class="favorite-icon active">
+                    <div class="listing-card" data-listing-id="1" style="background-color: var(--light); border-radius: var(--border-radius); overflow: hidden; box-shadow: var(--shadow); margin-bottom: 20px; transition: var(--transition); cursor: pointer; position: relative;">
+                        <div class="listing-image" style="height: 200px; background-color: var(--light-gray); background-size: cover; background-position: center; position: relative; background-image: url('https://images.unsplash.com/photo-1555854877-bab0e564b8d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
+                            <div class="listing-price" style="position: absolute; top: 15px; right: 15px; background-color: var(--secondary); color: white; padding: 8px 15px; border-radius: 20px; font-weight: bold; font-size: 1.1rem;">35 000 DA</div>
+                            <div class="favorite-icon active" style="position: absolute; top: 15px; left: 15px; color: white; background-color: rgba(0, 0, 0, 0.3); width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; z-index: 2;">
                                 <i class="fas fa-heart"></i>
                             </div>
+                            <div class="listing-verified" style="position: absolute; top: 15px; left: 60px; background-color: rgba(40, 167, 69, 0.9); color: white; padding: 5px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; display: flex; align-items: center; gap: 5px; z-index: 1;">
+                                <i class="fas fa-check-circle"></i> Vérifiée
+                            </div>
                         </div>
-                        <div class="listing-details">
-                            <h3 class="listing-title">Coloc spacieuse à Hydra</h3>
-                            <div class="listing-location">
+                        <div class="listing-details" style="padding: 20px;">
+                            <h3 class="listing-title" style="font-size: 1.2rem; margin-bottom: 10px; color: var(--primary);">Coloc spacieuse à Hydra</h3>
+                            <div class="listing-location" style="color: var(--gray); margin-bottom: 10px; display: flex; align-items: center; gap: 5px;">
                                 <i class="fas fa-map-marker-alt"></i>
                                 <span>Hydra, Alger</span>
+                                <span class="verified-badge" style="display: inline-flex; align-items: center; gap: 5px; background-color: rgba(40, 167, 69, 0.1); color: var(--success); padding: 5px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; margin-left: 10px;">
+                                    <i class="fas fa-check-circle"></i> Propriétaire vérifié
+                                </span>
                             </div>
                             <p>Chambre disponible dans un appartement de 4 chambres avec terrasse et vue mer. Idéal pour étudiant ou jeune professionnel.</p>
-                            <div class="listing-features">
-                                <div class="feature">
-                                    <i class="fas fa-bed"></i>
-                                    <span>Chambre simple</span>
-                                </div>
-                                <div class="feature">
-                                    <i class="fas fa-ruler-combined"></i>
-                                    <span>18 m²</span>
-                                </div>
-                                <div class="feature">
-                                    <i class="fas fa-users"></i>
-                                    <span>3 colocataires</span>
-                                </div>
-                            </div>
-                            <div class="listing-footer">
-                                <div class="rating" data-listing-id="1">
-                                    <div class="rating-stars">
-                                        <i class="fas fa-star rating-star filled" data-value="1"></i>
-                                        <i class="fas fa-star rating-star filled" data-value="2"></i>
-                                        <i class="fas fa-star rating-star filled" data-value="3"></i>
-                                        <i class="fas fa-star rating-star filled" data-value="4"></i>
-                                        <i class="far fa-star rating-star" data-value="5"></i>
-                                    </div>
-                                    <span class="rating-value">4.0</span>
-                                </div>
-                                <button class="share-btn" data-listing-id="1">
-                                    <i class="fas fa-share-alt"></i>
-                                    <span>Partager</span>
-                                </button>
+                            <div style="display: flex; gap: 10px; margin-top: 15px;">
+                                <button class="btn" style="flex: 1; padding: 10px;">Contacter</button>
+                                <button class="btn btn-secondary" style="flex: 1; padding: 10px;">Visiter</button>
                             </div>
                         </div>
                     </div>
                     
                     <!-- Annonce 2 -->
-                    <div class="listing-card" data-listing-id="2">
-                        <div class="listing-image" style="background-image: url('https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
-                            <div class="listing-price">28 000 DA</div>
-                            <div class="favorite-icon">
+                    <div class="listing-card" data-listing-id="2" style="background-color: var(--light); border-radius: var(--border-radius); overflow: hidden; box-shadow: var(--shadow); margin-bottom: 20px; transition: var(--transition); cursor: pointer; position: relative;">
+                        <div class="listing-image" style="height: 200px; background-color: var(--light-gray); background-size: cover; background-position: center; position: relative; background-image: url('https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
+                            <div class="listing-price" style="position: absolute; top: 15px; right: 15px; background-color: var(--secondary); color: white; padding: 8px 15px; border-radius: 20px; font-weight: bold; font-size: 1.1rem;">28 000 DA</div>
+                            <div class="favorite-icon" style="position: absolute; top: 15px; left: 15px; color: white; background-color: rgba(0, 0, 0, 0.3); width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; z-index: 2;">
                                 <i class="far fa-heart"></i>
                             </div>
+                            <div class="listing-verified" style="position: absolute; top: 15px; left: 60px; background-color: rgba(40, 167, 69, 0.9); color: white; padding: 5px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; display: flex; align-items: center; gap: 5px; z-index: 1;">
+                                <i class="fas fa-check-circle"></i> Vérifiée
+                            </div>
                         </div>
-                        <div class="listing-details">
-                            <h3 class="listing-title">Appartement moderne à Bab Ezzouar</h3>
-                            <div class="listing-location">
+                        <div class="listing-details" style="padding: 20px;">
+                            <h3 class="listing-title" style="font-size: 1.2rem; margin-bottom: 10px; color: var(--primary);">Appartement moderne à Bab Ezzouar</h3>
+                            <div class="listing-location" style="color: var(--gray); margin-bottom: 10px; display: flex; align-items: center; gap: 5px;">
                                 <i class="fas fa-map-marker-alt"></i>
                                 <span>Bab Ezzouar, Alger</span>
+                                <span class="verified-badge" style="display: inline-flex; align-items: center; gap: 5px; background-color: rgba(40, 167, 69, 0.1); color: var(--success); padding: 5px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; margin-left: 10px;">
+                                    <i class="fas fa-check-circle"></i> Propriétaire vérifié
+                                </span>
                             </div>
                             <p>Colocation dans un appartement neuf à proximité de l'université. Charges incluses. Environnement calme.</p>
-                            <div class="listing-features">
-                                <div class="feature">
-                                    <i class="fas fa-bed"></i>
-                                    <span>Chambre simple</span>
-                                </div>
-                                <div class="feature">
-                                    <i class="fas fa-ruler-combined"></i>
-                                    <span>15 m²</span>
-                                </div>
-                                <div class="feature">
-                                    <i class="fas fa-users"></i>
-                                    <span>2 colocataires</span>
-                                </div>
-                            </div>
-                            <div class="listing-footer">
-                                <div class="rating" data-listing-id="2">
-                                    <div class="rating-stars">
-                                        <i class="fas fa-star rating-star filled" data-value="1"></i>
-                                        <i class="fas fa-star rating-star filled" data-value="2"></i>
-                                        <i class="fas fa-star rating-star filled" data-value="3"></i>
-                                        <i class="far fa-star rating-star" data-value="4"></i>
-                                        <i class="far fa-star rating-star" data-value="5"></i>
-                                    </div>
-                                    <span class="rating-value">3.0</span>
-                                </div>
-                                <button class="share-btn" data-listing-id="2">
-                                    <i class="fas fa-share-alt"></i>
-                                    <span>Partager</span>
-                                </button>
+                            <div style="display: flex; gap: 10px; margin-top: 15px;">
+                                <button class="btn" style="flex: 1; padding: 10px;">Contacter</button>
+                                <button class="btn btn-secondary" style="flex: 1; padding: 10px;">Visiter</button>
                             </div>
                         </div>
                     </div>
-                </div>
-                
-                <!-- Pagination -->
-                <div class="pagination">
-                    <button class="pagination-btn disabled">
-                        <i class="fas fa-chevron-left"></i>
-                    </button>
-                    <button class="pagination-btn active">1</button>
-                    <button class="pagination-btn">2</button>
-                    <button class="pagination-btn">3</button>
-                    <button class="pagination-btn">
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
                 </div>
             </section>
             
             <!-- Section Recherche -->
             <section id="recherche" class="section">
-                <div class="search-bar">
-                    <input type="text" class="search-input" placeholder="Rechercher une colocation..." id="search-input">
+                <div class="search-bar" style="padding: 15px 20px; background-color: var(--light); display: flex; gap: 10px; box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05); margin-bottom: 20px; transition: var(--transition);">
+                    <input type="text" class="search-input" placeholder="Rechercher une colocation..." id="search-input" style="flex: 1; padding: 12px 15px; border: 1px solid var(--light-gray); border-radius: 8px; font-size: 1rem; background-color: white; color: var(--dark);">
                     <button class="btn" id="search-btn">
                         <i class="fas fa-search"></i>
                     </button>
                 </div>
                 
-                <div class="filters-container">
-                    <div class="filters-header">
-                        <h3>Filtres avancés</h3>
+                <div class="filters-container" style="background-color: var(--light); border-radius: var(--border-radius); padding: 25px; box-shadow: var(--shadow); margin-bottom: 20px; transition: var(--transition);">
+                    <div class="filters-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h3 style="color: var(--primary);">Filtres avancés</h3>
                         <button class="btn" style="padding: 8px 15px; font-size: 0.9rem;" id="reset-filters">Réinitialiser</button>
                     </div>
                     
-                    <div class="filter-group">
+                    <div class="form-group">
                         <label>Type de logement</label>
-                        <div class="filter-options">
+                        <div class="filter-options" style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px;">
                             <span class="filter-option active">Appartement</span>
                             <span class="filter-option">Maison</span>
                             <span class="filter-option">Studio</span>
                         </div>
                     </div>
                     
-                    <div class="filter-group">
-                        <label>Budget mensuel (DA)</label>
-                        <div style="display: flex; gap: 10px;">
-                            <input type="number" placeholder="Min" value="15000" id="min-price">
-                            <input type="number" placeholder="Max" value="50000" id="max-price">
-                        </div>
-                    </div>
-                    
-                    <div class="filter-group">
-                        <label>Superficie (m²)</label>
-                        <select id="surface-select">
-                            <option value="">Toutes</option>
-                            <option value="10">Moins de 10 m²</option>
-                            <option value="15">10-15 m²</option>
-                            <option value="20">15-20 m²</option>
-                            <option value="21">Plus de 20 m²</option>
-                        </select>
-                    </div>
-                    
-                    <div class="filter-group">
-                        <label>Charges incluses</label>
-                        <div class="filter-options">
-                            <span class="filter-option active">Électricité</span>
-                            <span class="filter-option">Eau</span>
-                            <span class="filter-option">Internet</span>
-                            <span class="filter-option">Toutes</span>
-                        </div>
-                    </div>
-                    
-                    <div class="filter-group">
-                        <label>Règles de la maison</label>
-                        <div class="filter-options">
-                            <span class="filter-option">Non-fumeur</span>
-                            <span class="filter-option">Animaux autorisés</span>
-                            <span class="filter-option">Filles uniquement</span>
-                            <span class="filter-option">Garçons uniquement</span>
+                    <div class="form-group">
+                        <label>Annonces vérifiées uniquement</label>
+                        <div style="display: flex; align-items: center; gap: 10px; margin-top: 10px;">
+                            <input type="checkbox" id="verified-only" checked>
+                            <label for="verified-only" style="margin-bottom: 0;">Afficher uniquement les annonces vérifiées</label>
                         </div>
                     </div>
                     
@@ -1560,262 +1120,30 @@
                 </div>
             </section>
             
-            <!-- Section Carte -->
-            <section id="carte" class="section map-section">
-                <div class="map-header">
-                    <h3>Colocations disponibles sur la carte</h3>
-                    <div class="map-legend">
-                        <span style="color: var(--primary); font-size: 0.9rem;">
-                            <i class="fas fa-map-marker-alt"></i> 8 annonces
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="map-container">
-                    <div id="map"></div>
-                    
-                    <div class="map-controls">
-                        <button class="map-control-btn" id="locate-me" title="Me localiser">
-                            <i class="fas fa-location-arrow"></i>
-                        </button>
-                        <button class="map-control-btn" id="zoom-in" title="Zoomer">
-                            <i class="fas fa-plus"></i>
-                        </button>
-                        <button class="map-control-btn" id="zoom-out" title="Dézoomer">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- Section Favoris -->
-            <section id="favoris" class="section">
-                <h3 style="margin-bottom: 15px; color: var(--primary);">Mes favoris</h3>
-                
-                <div class="listing-card" data-listing-id="1">
-                    <div class="listing-image" style="background-image: url('https://images.unsplash.com/photo-1555854877-bab0e564b8d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
-                        <div class="listing-price">35 000 DA</div>
-                        <div class="favorite-icon active">
-                            <i class="fas fa-heart"></i>
-                        </div>
-                    </div>
-                    <div class="listing-details">
-                        <h3 class="listing-title">Coloc spacieuse à Hydra</h3>
-                        <div class="listing-location">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>Hydra, Alger</span>
-                        </div>
-                        <p>Chambre disponible dans un appartement de 4 chambres avec terrasse et vue mer. Idéal pour étudiant ou jeune professionnel.</p>
-                        <div class="listing-footer">
-                            <div class="rating" data-listing-id="1">
-                                <div class="rating-stars">
-                                    <i class="fas fa-star rating-star filled" data-value="1"></i>
-                                    <i class="fas fa-star rating-star filled" data-value="2"></i>
-                                    <i class="fas fa-star rating-star filled" data-value="3"></i>
-                                    <i class="fas fa-star rating-star filled" data-value="4"></i>
-                                    <i class="far fa-star rating-star" data-value="5"></i>
-                                </div>
-                                <span class="rating-value">4.0</span>
-                            </div>
-                            <button class="share-btn" data-listing-id="1">
-                                <i class="fas fa-share-alt"></i>
-                                <span>Partager</span>
-                            </button>
-                        </div>
-                        <div style="display: flex; gap: 10px; margin-top: 15px;">
-                            <button class="btn" style="flex: 1; padding: 10px;">Contacter</button>
-                            <button class="btn btn-secondary" style="flex: 1; padding: 10px;">Visiter</button>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="empty-state">
-                    <i class="far fa-heart"></i>
-                    <h4>Vous n'avez pas d'autres favoris</h4>
-                    <p>Explorez les annonces et ajoutez-les à vos favoris</p>
-                    <button class="btn" style="margin-top: 20px;" id="explore-listings">Explorer les annonces</button>
-                </div>
-            </section>
-            
-            <!-- Section Chat -->
-            <section id="chat" class="section">
-                <h3 style="margin-bottom: 15px; color: var(--primary);">Messages</h3>
-                
-                <div class="chat-container" style="height: 500px;">
-                    <div class="chat-header">
-                        <div class="chat-avatar">KM</div>
-                        <div class="chat-contact-info">
-                            <h4>Karim M.</h4>
-                            <p>Colocation à Hydra</p>
-                        </div>
-                    </div>
-                    
-                    <div class="chat-messages">
-                        <div class="message received">
-                            Bonjour ! Je suis intéressé par votre annonce. La chambre est-elle toujours disponible ?
-                        </div>
-                        <div class="message sent">
-                            Bonjour ! Oui, elle est toujours disponible. Vous pouvez visiter demain si vous voulez.
-                        </div>
-                        <div class="message received">
-                            Parfait ! À quelle heure serait-ce possible ?
-                        </div>
-                        <div class="message sent">
-                            Entre 15h et 18h. Ça vous convient ?
-                        </div>
-                        <div class="message received">
-                            Oui, 16h ça me va. Vous pouvez m'envoyer l'adresse exacte ?
-                        </div>
-                    </div>
-                    
-                    <div class="chat-input">
-                        <input type="text" placeholder="Tapez votre message..." id="chat-input">
-                        <button id="send-message">
-                            <i class="fas fa-paper-plane"></i>
-                        </button>
-                    </div>
-                </div>
-                
-                <div style="margin-top: 20px;">
-                    <h4 style="margin-bottom: 15px; color: var(--primary);">Conversations récentes</h4>
-                    <div class="listing-card" style="display: flex; align-items: center; padding: 15px;">
-                        <div class="chat-avatar" style="margin-right: 15px;">SM</div>
-                        <div style="flex: 1;">
-                            <h4 style="font-size: 1rem;">Sofia M.</h4>
-                            <p style="color: var(--gray); font-size: 0.9rem;">Dernier message: La visite est confirmée pour demain...</p>
-                        </div>
-                        <span style="color: var(--gray); font-size: 0.8rem;">14:30</span>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- Section Profil -->
-            <section id="profil" class="section">
-                <div class="profile-header">
-                    <div class="profile-avatar">
-                        <div class="avatar-large">YA</div>
-                        <button class="btn btn-small btn-outline" id="change-avatar" style="margin-top: 10px;">Changer</button>
-                    </div>
-                    <div class="profile-info">
-                        <h3>Yassine A.</h3>
-                        <p><i class="fas fa-envelope"></i> yassine@example.com</p>
-                        <p><i class="fas fa-phone"></i> +213 123 45 67 89</p>
-                        <div class="profile-rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="far fa-star"></i>
-                            <span>4.0/5.0</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="profile-sections">
-                    <div class="profile-section">
-                        <h4><i class="fas fa-history"></i> Historique des visites</h4>
-                        <div class="history-item">
-                            <div>Colocation Hydra</div>
-                            <div>15/10/2023</div>
-                            <div class="status confirmed">Confirmée</div>
-                        </div>
-                        <div class="history-item">
-                            <div>Appartement Bab Ezzouar</div>
-                            <div>12/10/2023</div>
-                            <div class="status pending">En attente</div>
-                        </div>
-                    </div>
-                    
-                    <div class="profile-section">
-                        <h4><i class="fas fa-cog"></i> Préférences</h4>
-                        <div class="preference">
-                            <span>Notifications par email</span>
-                            <label class="toggle-switch">
-                                <input type="checkbox" checked id="email-notifications">
-                                <span class="slider"></span>
-                            </label>
-                        </div>
-                        <div class="preference">
-                            <span>Mode sombre</span>
-                            <label class="toggle-switch">
-                                <input type="checkbox" id="dark-mode-toggle">
-                                <span class="slider"></span>
-                            </label>
-                        </div>
-                        <div class="preference">
-                            <span>Notifications push</span>
-                            <label class="toggle-switch">
-                                <input type="checkbox" checked id="push-notifications">
-                                <span class="slider"></span>
-                            </label>
-                        </div>
-                    </div>
-                    
-                    <div class="profile-section">
-                        <h4><i class="fas fa-shield-alt"></i> Sécurité</h4>
-                        <button class="btn btn-full" id="change-password">Changer le mot de passe</button>
-                        <button class="btn btn-full btn-secondary" id="logout" style="margin-top: 10px;">Se déconnecter</button>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- Section Publication -->
+            <!-- Section Publication (cachée dans la navigation mais accessible via bouton) -->
             <section id="publication" class="section">
-                <h3 style="margin-bottom: 15px; color: var(--primary);">Publier une annonce</h3>
-                
-                <div class="publish-form">
+                <div class="publish-form" style="background-color: var(--light); border-radius: var(--border-radius); padding: 25px; box-shadow: var(--shadow); margin-bottom: 20px; transition: var(--transition);">
+                    <h3 style="margin-bottom: 20px; color: var(--primary);">Publier une annonce</h3>
+                    
+                    <div style="background-color: rgba(var(--warning-rgb), 0.1); border-left: 4px solid var(--warning); padding: 15px; margin-bottom: 20px; border-radius: 4px;">
+                        <p style="color: var(--dark); margin-bottom: 5px; display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-exclamation-triangle" style="color: var(--warning);"></i>
+                            <strong>Votre compte doit être vérifié pour publier une annonce</strong>
+                        </p>
+                        <p style="color: var(--gray); font-size: 0.9rem;">
+                            Pour lutter contre les fausses annonces, nous vérifions tous les comptes avant publication.
+                        </p>
+                    </div>
+                    
                     <div class="form-group">
                         <label>Titre de l'annonce *</label>
                         <input type="text" placeholder="Ex: Colocation spacieuse à Hydra" id="ad-title" required>
                     </div>
                     
-                    <div class="form-group">
-                        <label>Description *</label>
-                        <textarea placeholder="Décrivez votre logement, l'ambiance, les colocataires..." id="ad-description" required></textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Adresse *</label>
-                        <input type="text" placeholder="Adresse complète" id="ad-address" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Loyer mensuel (DA) *</label>
-                        <input type="number" placeholder="25000" id="ad-price" min="0" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Localisation sur la carte</label>
-                        <div style="display: flex; gap: 10px;">
-                            <input type="number" placeholder="Latitude" id="ad-lat" step="0.000001" value="36.7525">
-                            <input type="number" placeholder="Longitude" id="ad-lng" step="0.000001" value="3.04197">
-                        </div>
-                        <p style="font-size: 0.8rem; color: var(--gray); margin-top: 5px;">
-                            <i class="fas fa-info-circle"></i> Les coordonnées seront utilisées pour afficher votre annonce sur la carte
-                        </p>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Charges incluses</label>
-                        <div class="filter-options">
-                            <span class="filter-option">Électricité</span>
-                            <span class="filter-option active">Eau</span>
-                            <span class="filter-option active">Internet</span>
-                            <span class="filter-option">Gardiennage</span>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Photos du logement *</label>
-                        <div class="photo-upload" id="photo-upload">
-                            <i class="fas fa-cloud-upload-alt" style="font-size: 2rem; margin-bottom: 10px;"></i>
-                            <p>Cliquez pour télécharger des photos</p>
-                            <p style="font-size: 0.9rem;">JPG, PNG jusqu'à 5MB</p>
-                        </div>
-                    </div>
-                    
-                    <button class="btn btn-full btn-secondary" id="publish-ad">Publier l'annonce</button>
-                    <p style="text-align: center; margin-top: 15px; color: var(--gray); font-size: 0.9rem;">La publication est gratuite</p>
+                    <button class="btn btn-full btn-secondary" id="publish-ad" disabled>Publier l'annonce (Compte non vérifié)</button>
+                    <p style="text-align: center; margin-top: 15px; color: var(--gray); font-size: 0.9rem;">
+                        <i class="fas fa-shield-alt"></i> La publication est réservée aux comptes vérifiés
+                    </p>
                 </div>
             </section>
         </main>
@@ -1826,181 +1154,182 @@
                 <i class="fas fa-plus"></i>
             </button>
         </div>
-        
-        <!-- Modal pour les détails de l'annonce -->
-        <div class="modal" id="listing-modal">
-            <div class="modal-content">
-                <button class="modal-close" id="close-modal">&times;</button>
-                <div class="listing-card" style="box-shadow: none; margin: 0;">
-                    <div class="listing-image" style="height: 250px; border-radius: var(--border-radius) var(--border-radius) 0 0;">
-                        <div class="listing-price">35 000 DA</div>
-                        <div class="favorite-icon active">
-                            <i class="fas fa-heart"></i>
-                        </div>
-                    </div>
-                    <div class="listing-details">
-                        <h3 class="listing-title">Coloc spacieuse à Hydra</h3>
-                        <div class="listing-location">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>Hydra, Alger</span>
-                        </div>
-                        <p>Chambre disponible dans un appartement de 4 chambres avec terrasse et vue mer. L'appartement est entièrement meublé et équipé (climatisation, WiFi, machine à laver). Idéal pour étudiant ou jeune professionnel.</p>
-                        <div class="listing-features">
-                            <div class="feature">
-                                <i class="fas fa-bed"></i>
-                                <span>Chambre simple</span>
-                            </div>
-                            <div class="feature">
-                                <i class="fas fa-ruler-combined"></i>
-                                <span>18 m²</span>
-                            </div>
-                            <div class="feature">
-                                <i class="fas fa-users"></i>
-                                <span>3 colocataires</span>
-                            </div>
-                        </div>
-                        <div class="listing-footer">
-                            <div class="rating" data-listing-id="1">
-                                <div class="rating-stars">
-                                    <i class="fas fa-star rating-star filled" data-value="1"></i>
-                                    <i class="fas fa-star rating-star filled" data-value="2"></i>
-                                    <i class="fas fa-star rating-star filled" data-value="3"></i>
-                                    <i class="fas fa-star rating-star filled" data-value="4"></i>
-                                    <i class="far fa-star rating-star" data-value="5"></i>
-                                </div>
-                                <span class="rating-value">4.0</span>
-                            </div>
-                            <button class="share-btn" data-listing-id="1">
-                                <i class="fas fa-share-alt"></i>
-                                <span>Partager</span>
-                            </button>
-                        </div>
-                        <div class="detail-features" style="margin-top: 20px;">
-                            <div class="detail-feature">
-                                <i class="fas fa-wifi"></i>
-                                <span>WiFi inclus</span>
-                            </div>
-                            <div class="detail-feature">
-                                <i class="fas fa-snowflake"></i>
-                                <span>Climatisation</span>
-                            </div>
-                            <div class="detail-feature">
-                                <i class="fas fa-car"></i>
-                                <span>Parking</span>
-                            </div>
-                            <div class="detail-feature">
-                                <i class="fas fa-tshirt"></i>
-                                <span>Machine à laver</span>
-                            </div>
-                        </div>
-                        <div style="display: flex; gap: 10px; margin-top: 25px;">
-                            <button class="btn" style="flex: 1; padding: 12px;">Contacter</button>
-                            <button class="btn btn-secondary" style="flex: 1; padding: 12px;">Visiter</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
     
     <script>
         // Variables globales
-        let currentSection = 'accueil';
-        let favoriteListings = JSON.parse(localStorage.getItem('favoriteListings') || '["1"]');
-        let listingRatings = JSON.parse(localStorage.getItem('listingRatings') || '{"1": 4, "2": 3}');
-        let map = null;
-        let markers = [];
-        let currentPage = 1;
-        const itemsPerPage = 2;
+        let currentUser = JSON.parse(localStorage.getItem('coloco_current_user')) || null;
+        let verificationCode = null;
+        let verificationTimer = null;
+        let countdownSeconds = 60;
+        let isDarkMode = localStorage.getItem('darkMode') === 'true';
         
-        // Données des annonces (simulées)
-        const listingsData = [
-            {
-                id: 1,
-                title: "Coloc spacieuse à Hydra",
-                price: 35000,
-                location: "Hydra, Alger",
-                address: "12 Rue des Jardins, Hydra",
-                lat: 36.7525,
-                lng: 3.04197,
-                description: "Chambre disponible dans un appartement de 4 chambres avec terrasse et vue mer. Idéal pour étudiant ou jeune professionnel.",
-                type: "Appartement",
-                surface: 18,
-                rooms: 1,
-                roommates: 3,
-                features: ["Meublé", "WiFi", "Climatisation", "Parking"],
-                isFavorite: true,
-                rating: 4
-            },
-            {
-                id: 2,
-                title: "Appartement moderne à Bab Ezzouar",
-                price: 28000,
-                location: "Bab Ezzouar, Alger",
-                address: "45 Avenue du 1er Novembre, Bab Ezzouar",
-                lat: 36.7095,
-                lng: 3.1821,
-                description: "Colocation dans un appartement neuf à proximité de l'université. Charges incluses. Environnement calme.",
-                type: "Appartement",
-                surface: 15,
-                rooms: 1,
-                roommates: 2,
-                features: ["Meublé", "WiFi", "Climatisation"],
-                isFavorite: false,
-                rating: 3
-            },
-            {
-                id: 3,
-                title: "Colocation avec terrasse à El Biar",
-                price: 42000,
-                location: "El Biar, Alger",
-                address: "8 Rue Didouche Mourad, El Biar",
-                lat: 36.7645,
-                lng: 3.0421,
-                description: "Magnifique appartement avec grande terrasse et vue panoramique. Proche des commerces et transports.",
-                type: "Appartement",
-                surface: 22,
-                rooms: 1,
-                roommates: 2,
-                features: ["Meublé", "WiFi", "Climatisation", "Terrasse"],
-                isFavorite: false,
-                rating: 5
-            },
-            {
-                id: 4,
-                title: "Maison de ville à Oran",
-                price: 32000,
-                location: "Sidi Maarouf, Oran",
-                address: "22 Boulevard de la Soummam, Sidi Maarouf",
-                lat: 35.6971,
-                lng: -0.6297,
-                description: "Colocation dans une maison de ville avec jardin. Ambiance conviviale, idéale pour étudiants.",
-                type: "Maison",
-                surface: 25,
-                rooms: 1,
-                roommates: 4,
-                features: ["Meublé", "WiFi", "Jardin"],
-                isFavorite: false,
-                rating: 4
-            },
-            {
-                id: 5,
-                title: "Studio moderne à Constantine",
-                price: 25000,
-                location: "Centre-ville, Constantine",
-                address: "15 Rue de la République, Constantine",
-                lat: 36.3650,
-                lng: 6.6147,
-                description: "Studio disponible dans une résidence sécurisée. Idéal pour étudiant seul.",
-                type: "Studio",
-                surface: 12,
-                rooms: 1,
-                roommates: 1,
-                features: ["Meublé", "WiFi", "Climatisation", "Sécurité"],
-                isFavorite: false,
-                rating: 4
+        // Initialisation au chargement
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialiser le mode sombre
+            if (isDarkMode) {
+                document.body.classList.add('dark-mode');
+                document.getElementById('theme-toggle').innerHTML = '<i class="fas fa-sun"></i>';
             }
-        ];
+            
+            // Afficher l'interface appropriée selon l'état de connexion
+            updateAuthUI();
+            
+            // Gestion du mode sombre
+            document.getElementById('theme-toggle').addEventListener('click', toggleDarkMode);
+            
+            // Gestion des boutons d'authentification
+            document.getElementById('login-btn').addEventListener('click', () => showAuthModal('login'));
+            document.getElementById('register-btn').addEventListener('click', () => showAuthModal('register'));
+            document.getElementById('close-auth').addEventListener('click', hideAuthModal);
+            
+            // Navigation dans les tabs d'authentification
+            document.querySelectorAll('.auth-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    switchAuthTab(tabId);
+                });
+            });
+            
+            // Switch entre connexion et inscription
+            document.getElementById('switch-to-register').addEventListener('click', function(e) {
+                e.preventDefault();
+                switchAuthTab('register');
+            });
+            
+            document.getElementById('switch-to-login').addEventListener('click', function(e) {
+                e.preventDefault();
+                switchAuthTab('login');
+            });
+            
+            // Gestion du formulaire d'inscription
+            document.getElementById('register-form').addEventListener('submit', handleRegister);
+            
+            // Gestion du formulaire de connexion
+            document.getElementById('login-form').addEventListener('submit', handleLogin);
+            
+            // Gestion du formulaire de vérification
+            document.getElementById('verify-form').addEventListener('submit', handleVerification);
+            
+            // Gestion du mot de passe oublié
+            document.getElementById('forgot-password').addEventListener('click', function(e) {
+                e.preventDefault();
+                showToast('Un email de réinitialisation a été envoyé (simulation)', 'info');
+            });
+            
+            // Gestion du renvoi de code
+            document.getElementById('resend-code-btn').addEventListener('click', resendVerificationCode);
+            
+            // Gestion du changement d'email
+            document.getElementById('change-email').addEventListener('click', function() {
+                switchAuthTab('register');
+            });
+            
+            // Gestion de la force du mot de passe
+            document.getElementById('register-password').addEventListener('input', checkPasswordStrength);
+            
+            // Gestion des inputs de code de vérification
+            document.querySelectorAll('.code-input').forEach(input => {
+                input.addEventListener('input', function() {
+                    const index = parseInt(this.getAttribute('data-index'));
+                    
+                    // Remplir automatiquement le prochain champ
+                    if (this.value.length === 1 && index < 5) {
+                        document.querySelector(`.code-input[data-index="${index + 1}"]`).focus();
+                    }
+                    
+                    // Marquer le champ comme rempli
+                    if (this.value.length === 1) {
+                        this.classList.add('code-input-filled');
+                    } else {
+                        this.classList.remove('code-input-filled');
+                    }
+                });
+                
+                // Gestion de la suppression
+                input.addEventListener('keydown', function(e) {
+                    if (e.key === 'Backspace' && this.value.length === 0) {
+                        const index = parseInt(this.getAttribute('data-index'));
+                        if (index > 0) {
+                            document.querySelector(`.code-input[data-index="${index - 1}"]`).focus();
+                        }
+                    }
+                });
+            });
+            
+            // Gestion de la publication
+            document.getElementById('publish-btn').addEventListener('click', function() {
+                if (!currentUser) {
+                    showAuthModal('register');
+                    showToast('Vous devez vous inscrire et vérifier votre compte pour publier une annonce', 'warning');
+                    return;
+                }
+                
+                if (!currentUser.verified) {
+                    showToast('Votre compte doit être vérifié pour publier une annonce', 'warning');
+                    return;
+                }
+                
+                // Rediriger vers la section publication
+                document.querySelectorAll('.nav-item').forEach(navItem => {
+                    navItem.classList.remove('active');
+                });
+                
+                document.querySelectorAll('.section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                
+                document.getElementById('publication').classList.add('active');
+            });
+            
+            // Gestion du slider de prix
+            const rentSlider = document.querySelector('input[type="range"]');
+            const rentValue = document.getElementById('rent-value');
+            
+            if (rentSlider && rentValue) {
+                rentSlider.addEventListener('input', function() {
+                    rentValue.textContent = new Intl.NumberFormat('fr-DZ').format(this.value) + ' DA';
+                });
+            }
+            
+            // Navigation entre sections
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    // Retirer la classe active de tous les éléments de navigation
+                    document.querySelectorAll('.nav-item').forEach(navItem => {
+                        navItem.classList.remove('active');
+                    });
+                    
+                    // Ajouter la classe active à l'élément cliqué
+                    this.classList.add('active');
+                    
+                    // Masquer toutes les sections
+                    document.querySelectorAll('.section').forEach(section => {
+                        section.classList.remove('active');
+                    });
+                    
+                    // Afficher la section correspondante
+                    const sectionId = this.getAttribute('data-section');
+                    document.getElementById(sectionId).classList.add('active');
+                });
+            });
+            
+            // Fermer le modal de détails
+            document.getElementById('close-modal').addEventListener('click', function() {
+                document.getElementById('listing-modal').classList.remove('active');
+            });
+            
+            // Ouvrir les détails d'une annonce
+            document.querySelectorAll('.listing-card').forEach(card => {
+                card.addEventListener('click', function(e) {
+                    // Ne pas ouvrir le modal si on clique sur le bouton favori
+                    if (!e.target.closest('.favorite-icon')) {
+                        const listingId = this.getAttribute('data-listing-id');
+                        showListingDetails(listingId);
+                    }
+                });
+            });
+        });
         
         // Fonction pour afficher une notification
         function showToast(message, type = 'info', duration = 5000) {
@@ -2074,602 +1403,436 @@
             showToast(`Mode ${isDarkMode ? 'sombre' : 'clair'} activé`, 'info', 2000);
         }
         
-        // Fonction pour évaluer une annonce
-        function rateListing(listingId, rating) {
-            listingRatings[listingId] = rating;
-            localStorage.setItem('listingRatings', JSON.stringify(listingRatings));
-            
-            // Mettre à jour l'affichage
-            updateRatingDisplay(listingId, rating);
-            
-            showToast('Merci pour votre évaluation !', 'success');
+        // Fonction pour afficher le modal d'authentification
+        function showAuthModal(tab = 'login') {
+            document.getElementById('auth-overlay').classList.add('active');
+            switchAuthTab(tab);
         }
         
-        // Fonction pour mettre à jour l'affichage des étoiles
-        function updateRatingDisplay(listingId, rating) {
-            const ratingElements = document.querySelectorAll(`.rating[data-listing-id="${listingId}"]`);
-            
-            ratingElements.forEach(ratingEl => {
-                const stars = ratingEl.querySelectorAll('.rating-star');
-                const ratingValue = ratingEl.querySelector('.rating-value');
-                
-                stars.forEach((star, index) => {
-                    if (index < rating) {
-                        star.classList.remove('far');
-                        star.classList.add('fas', 'filled');
-                    } else {
-                        star.classList.remove('fas', 'filled');
-                        star.classList.add('far');
-                    }
-                });
-                
-                if (ratingValue) {
-                    ratingValue.textContent = rating.toFixed(1);
-                }
+        // Fonction pour masquer le modal d'authentification
+        function hideAuthModal() {
+            document.getElementById('auth-overlay').classList.remove('active');
+        }
+        
+        // Fonction pour changer d'onglet dans l'authentification
+        function switchAuthTab(tab) {
+            // Mettre à jour les tabs
+            document.querySelectorAll('.auth-tab').forEach(tabElement => {
+                tabElement.classList.remove('active');
             });
-        }
-        
-        // Fonction pour partager une annonce
-        function shareListing(listingId) {
-            const listing = listingsData.find(l => l.id == listingId);
-            if (!listing) return;
             
-            const shareUrl = `${window.location.origin}?listing=${listingId}`;
-            const shareText = `Découvrez cette colocation: ${listing.title} - ${listing.price.toLocaleString('fr-DZ')} DA`;
+            document.querySelector(`.auth-tab[data-tab="${tab}"]`).classList.add('active');
             
-            if (navigator.share) {
-                navigator.share({
-                    title: listing.title,
-                    text: shareText,
-                    url: shareUrl,
-                })
-                .then(() => showToast('Annonce partagée avec succès!', 'success'))
-                .catch(err => console.log('Erreur de partage:', err));
-            } else {
-                // Fallback: copier dans le presse-papier
-                navigator.clipboard.writeText(`${shareText}\n${shareUrl}`)
-                    .then(() => showToast('Lien copié dans le presse-papier!', 'success'))
-                    .catch(err => {
-                        console.error('Erreur de copie:', err);
-                        showToast('Impossible de copier le lien', 'error');
-                    });
+            // Afficher le bon formulaire
+            document.querySelectorAll('.auth-form').forEach(form => {
+                form.classList.remove('active');
+            });
+            
+            document.getElementById(`${tab}-form`).classList.add('active');
+            
+            // Si on passe à l'inscription, réinitialiser le formulaire
+            if (tab === 'register') {
+                document.getElementById('register-form').reset();
+                document.getElementById('password-strength-bar').className = 'password-strength-bar';
             }
         }
         
-        // Fonction pour basculer les favoris
-        function toggleFavorite(listingId) {
-            const index = favoriteListings.indexOf(listingId.toString());
-            if (index === -1) {
-                favoriteListings.push(listingId.toString());
-                showToast('Ajouté aux favoris', 'success');
-            } else {
-                favoriteListings.splice(index, 1);
-                showToast('Retiré des favoris', 'info');
+        // Fonction pour gérer l'inscription
+        function handleRegister(e) {
+            e.preventDefault();
+            
+            // Récupérer les valeurs du formulaire
+            const name = document.getElementById('register-name').value.trim();
+            const email = document.getElementById('register-email').value.trim();
+            const phone = document.getElementById('register-phone').value.trim();
+            const password = document.getElementById('register-password').value;
+            const confirmPassword = document.getElementById('register-confirm').value;
+            const acceptTerms = document.getElementById('accept-terms').checked;
+            
+            // Validation
+            if (!name || !email || !phone || !password || !confirmPassword) {
+                showToast('Veuillez remplir tous les champs', 'error');
+                return;
             }
             
-            localStorage.setItem('favoriteListings', JSON.stringify(favoriteListings));
-            updateFavoriteIcons();
+            if (password !== confirmPassword) {
+                showToast('Les mots de passe ne correspondent pas', 'error');
+                return;
+            }
+            
+            if (password.length < 8) {
+                showToast('Le mot de passe doit contenir au moins 8 caractères', 'error');
+                return;
+            }
+            
+            if (!acceptTerms) {
+                showToast('Vous devez accepter les conditions d\'utilisation', 'error');
+                return;
+            }
+            
+            // Vérifier si l'email est déjà utilisé
+            const users = JSON.parse(localStorage.getItem('coloco_users')) || [];
+            const existingUser = users.find(user => user.email === email);
+            
+            if (existingUser) {
+                showToast('Cet email est déjà utilisé', 'error');
+                return;
+            }
+            
+            // Générer un code de vérification
+            verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+            
+            // Stocker temporairement les données de l'utilisateur
+            const tempUser = {
+                id: Date.now().toString(),
+                name,
+                email,
+                phone,
+                password: btoa(password), // Chiffrement basique (en production, utiliser un vrai chiffrement)
+                verified: false,
+                createdAt: new Date().toISOString()
+            };
+            
+            localStorage.setItem('coloco_temp_user', JSON.stringify(tempUser));
+            localStorage.setItem('coloco_verification_code', verificationCode);
+            
+            // Afficher le formulaire de vérification
+            switchAuthTab('verify');
+            
+            // Afficher l'email dans le formulaire de vérification
+            document.getElementById('verification-email').textContent = email;
+            
+            // Démarrer le compte à rebours pour le renvoi de code
+            startVerificationCountdown();
+            
+            // Simuler l'envoi d'email (en production, envoyer un vrai email)
+            console.log(`Code de vérification pour ${email}: ${verificationCode}`);
+            showToast(`Un code de vérification a été envoyé à ${email} (simulation)`, 'info');
         }
         
-        // Fonction pour mettre à jour les icônes de favoris
-        function updateFavoriteIcons() {
-            document.querySelectorAll('.favorite-icon').forEach(icon => {
-                const listingId = icon.closest('.listing-card').getAttribute('data-listing-id');
-                const isFavorite = favoriteListings.includes(listingId);
-                
-                if (isFavorite) {
-                    icon.classList.add('active');
-                    icon.innerHTML = '<i class="fas fa-heart"></i>';
-                } else {
-                    icon.classList.remove('active');
-                    icon.innerHTML = '<i class="far fa-heart"></i>';
-                }
-            });
-        }
-        
-        // Initialisation au chargement
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialiser le mode sombre
-            const darkMode = localStorage.getItem('darkMode') === 'true';
-            if (darkMode) {
-                document.body.classList.add('dark-mode');
-                document.getElementById('theme-toggle').innerHTML = '<i class="fas fa-sun"></i>';
-                document.getElementById('dark-mode-toggle').checked = true;
+        // Fonction pour gérer la connexion
+        function handleLogin(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('login-email').value.trim();
+            const password = document.getElementById('login-password').value;
+            
+            // Validation
+            if (!email || !password) {
+                showToast('Veuillez remplir tous les champs', 'error');
+                return;
             }
             
-            // Initialiser le slider de prix
-            const rentSlider = document.querySelector('input[type="range"]');
-            const rentValue = document.getElementById('rent-value');
+            // Vérifier les informations de connexion
+            const users = JSON.parse(localStorage.getItem('coloco_users')) || [];
+            const user = users.find(u => u.email === email && atob(u.password) === password);
             
-            rentSlider.addEventListener('input', function() {
-                rentValue.textContent = new Intl.NumberFormat('fr-DZ').format(this.value) + ' DA';
-            });
-            
-            // Navigation entre sections
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.addEventListener('click', function() {
-                    // Retirer la classe active de tous les éléments de navigation
-                    document.querySelectorAll('.nav-item').forEach(navItem => {
-                        navItem.classList.remove('active');
-                    });
-                    
-                    // Ajouter la classe active à l'élément cliqué
-                    this.classList.add('active');
-                    
-                    // Masquer toutes les sections
-                    document.querySelectorAll('.section').forEach(section => {
-                        section.classList.remove('active');
-                    });
-                    
-                    // Afficher la section correspondante
-                    const sectionId = this.getAttribute('data-section');
-                    document.getElementById(sectionId).classList.add('active');
-                    currentSection = sectionId;
-                    
-                    // Initialiser la carte si on est sur la section carte
-                    if (sectionId === 'carte' && !map) {
-                        initMap();
-                    }
-                });
-            });
-            
-            // Gestion des favoris
-            document.querySelectorAll('.favorite-icon').forEach(icon => {
-                icon.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    const listingId = this.closest('.listing-card').getAttribute('data-listing-id');
-                    toggleFavorite(listingId);
-                });
-            });
-            
-            // Initialiser les étoiles de notation
-            document.querySelectorAll('.rating-star').forEach(star => {
-                star.addEventListener('click', function() {
-                    const rating = parseInt(this.getAttribute('data-value'));
-                    const listingId = this.closest('.rating').getAttribute('data-listing-id');
-                    rateListing(listingId, rating);
-                });
-            });
-            
-            // Gestion des boutons de partage
-            document.querySelectorAll('.share-btn').forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    const listingId = this.getAttribute('data-listing-id');
-                    shareListing(listingId);
-                });
-            });
-            
-            // Bouton "Commencer la recherche"
-            document.getElementById('start-search').addEventListener('click', function() {
-                // Activer la section recherche
-                document.querySelectorAll('.nav-item').forEach(navItem => {
-                    navItem.classList.remove('active');
-                });
-                
-                document.querySelector('.nav-item[data-section="recherche"]').classList.add('active');
-                
-                // Masquer toutes les sections
-                document.querySelectorAll('.section').forEach(section => {
-                    section.classList.remove('active');
-                });
-                
-                // Afficher la section recherche
-                document.getElementById('recherche').classList.add('active');
-                currentSection = 'recherche';
-            });
-            
-            // Bouton de publication
-            document.getElementById('publish-btn').addEventListener('click', function() {
-                // Masquer toutes les sections
-                document.querySelectorAll('.section').forEach(section => {
-                    section.classList.remove('active');
-                });
-                
-                // Afficher la section publication
-                document.getElementById('publication').classList.add('active');
-                currentSection = 'publication';
-                
-                // Scroll vers le haut
-                document.querySelector('.app-content').scrollTop = 0;
-            });
-            
-            // Options de filtre
-            document.querySelectorAll('.filter-option').forEach(option => {
-                option.addEventListener('click', function() {
-                    this.classList.toggle('active');
-                });
-            });
-            
-            // Envoyer un message dans le chat
-            document.getElementById('send-message').addEventListener('click', sendMessage);
-            document.getElementById('chat-input').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    sendMessage();
-                }
-            });
-            
-            function sendMessage() {
-                const input = document.getElementById('chat-input');
-                const messageText = input.value.trim();
-                
-                if (messageText) {
-                    const messagesContainer = document.querySelector('.chat-messages');
-                    
-                    const messageDiv = document.createElement('div');
-                    messageDiv.classList.add('message', 'sent');
-                    messageDiv.textContent = messageText;
-                    
-                    messagesContainer.appendChild(messageDiv);
-                    input.value = '';
-                    
-                    // Faire défiler vers le bas
-                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
-                    
-                    // Simulation d'une réponse automatique après 1 seconde
-                    setTimeout(() => {
-                        const autoReply = document.createElement('div');
-                        autoReply.classList.add('message', 'received');
-                        autoReply.textContent = "Merci pour votre message. Je vous répondrai dès que possible.";
-                        messagesContainer.appendChild(autoReply);
-                        messagesContainer.scrollTop = messagesContainer.scrollHeight;
-                    }, 1000);
-                }
+            if (!user) {
+                showToast('Email ou mot de passe incorrect', 'error');
+                return;
             }
             
-            // Appliquer les filtres
-            document.getElementById('apply-filters').addEventListener('click', function() {
-                showToast('Filtres appliqués !', 'success');
-            });
+            if (!user.verified) {
+                showToast('Veuillez vérifier votre compte avant de vous connecter', 'warning');
+                
+                // Afficher le formulaire de vérification
+                localStorage.setItem('coloco_temp_user', JSON.stringify(user));
+                verificationCode = localStorage.getItem('coloco_verification_code') || Math.floor(100000 + Math.random() * 900000).toString();
+                
+                switchAuthTab('verify');
+                document.getElementById('verification-email').textContent = email;
+                startVerificationCountdown();
+                return;
+            }
             
-            // Bouton "Explorer les annonces"
-            document.getElementById('explore-listings').addEventListener('click', function() {
-                document.querySelectorAll('.nav-item').forEach(navItem => {
-                    navItem.classList.remove('active');
-                });
-                
-                document.querySelector('.nav-item[data-section="accueil"]').classList.add('active');
-                
-                document.querySelectorAll('.section').forEach(section => {
-                    section.classList.remove('active');
-                });
-                
-                document.getElementById('accueil').classList.add('active');
-                currentSection = 'accueil';
-            });
+            // Connexion réussie
+            currentUser = user;
+            localStorage.setItem('coloco_current_user', JSON.stringify(user));
+            
+            // Mettre à jour l'interface
+            updateAuthUI();
             
             // Fermer le modal
-            document.getElementById('close-modal').addEventListener('click', function() {
-                document.getElementById('listing-modal').classList.remove('active');
+            hideAuthModal();
+            
+            showToast(`Bienvenue ${user.name} !`, 'success');
+        }
+        
+        // Fonction pour gérer la vérification
+        function handleVerification(e) {
+            e.preventDefault();
+            
+            // Récupérer le code saisi
+            const codeInputs = document.querySelectorAll('.code-input');
+            let enteredCode = '';
+            codeInputs.forEach(input => {
+                enteredCode += input.value;
             });
             
-            // Ouvrir les détails d'une annonce
-            document.querySelectorAll('.listing-card').forEach(card => {
-                card.addEventListener('click', function(e) {
-                    // Ne pas ouvrir le modal si on clique sur le bouton favori, étoiles ou partage
-                    if (!e.target.closest('.favorite-icon') && !e.target.closest('.rating-star') && !e.target.closest('.share-btn')) {
-                        const listingId = this.getAttribute('data-listing-id');
-                        showListingDetails(listingId);
-                    }
-                });
-            });
+            // Récupérer le code stocké
+            const storedCode = localStorage.getItem('coloco_verification_code');
             
-            // Publier une annonce
-            document.getElementById('publish-ad').addEventListener('click', function() {
-                const title = document.getElementById('ad-title').value;
-                const description = document.getElementById('ad-description').value;
-                const address = document.getElementById('ad-address').value;
-                const price = document.getElementById('ad-price').value;
-                const lat = document.getElementById('ad-lat').value;
-                const lng = document.getElementById('ad-lng').value;
-                
-                // Validation
-                if (!title || !description || !address || !price) {
-                    showToast('Veuillez remplir tous les champs obligatoires (*)', 'error');
-                    return;
-                }
-                
-                if (parseFloat(price) <= 0) {
-                    showToast('Le loyer doit être supérieur à 0', 'error');
-                    return;
-                }
-                
-                // Afficher un état de chargement
-                const originalText = this.textContent;
-                this.innerHTML = '<div class="loading"></div>';
-                this.disabled = true;
-                
-                // Simuler un délai de traitement
-                setTimeout(() => {
-                    // Ajouter la nouvelle annonce aux données
-                    const newId = listingsData.length + 1;
-                    const newListing = {
-                        id: newId,
-                        title: title,
-                        price: parseInt(price),
-                        location: address,
-                        address: address,
-                        lat: parseFloat(lat),
-                        lng: parseFloat(lng),
-                        description: description,
-                        type: "Appartement",
-                        surface: 15,
-                        rooms: 1,
-                        roommates: 3,
-                        features: ["Meublé"],
-                        isFavorite: false,
-                        rating: 0
-                    };
-                    
-                    listingsData.push(newListing);
-                    
-                    // Mettre à jour la carte si elle est initialisée
-                    if (map) {
-                        addMarkerToMap(newListing);
-                    }
-                    
-                    showToast('Annonce publiée avec succès ! Elle est maintenant visible sur la carte.', 'success');
-                    
-                    // Réinitialiser le formulaire
-                    document.getElementById('ad-title').value = '';
-                    document.getElementById('ad-description').value = '';
-                    document.getElementById('ad-address').value = '';
-                    document.getElementById('ad-price').value = '';
-                    
-                    // Réactiver le bouton
-                    this.textContent = originalText;
-                    this.disabled = false;
-                    
-                    // Revenir à l'accueil
-                    document.querySelectorAll('.nav-item').forEach(navItem => {
-                        navItem.classList.remove('active');
-                    });
-                    
-                    document.querySelector('.nav-item[data-section="accueil"]').classList.add('active');
-                    
-                    document.querySelectorAll('.section').forEach(section => {
-                        section.classList.remove('active');
-                    });
-                    
-                    document.getElementById('accueil').classList.add('active');
-                    currentSection = 'accueil';
-                }, 1500);
-            });
-            
-            // Gestion du mode sombre
-            document.getElementById('theme-toggle').addEventListener('click', toggleDarkMode);
-            document.getElementById('dark-mode-toggle').addEventListener('change', toggleDarkMode);
-            
-            // Gestion du profil
-            document.getElementById('user-profile-btn').addEventListener('click', function() {
-                document.querySelectorAll('.nav-item').forEach(navItem => {
-                    navItem.classList.remove('active');
-                });
-                
-                document.querySelector('.nav-item[data-section="profil"]').classList.add('active');
-                
-                document.querySelectorAll('.section').forEach(section => {
-                    section.classList.remove('active');
-                });
-                
-                document.getElementById('profil').classList.add('active');
-                currentSection = 'profil';
-            });
-            
-            // Bouton de déconnexion
-            document.getElementById('logout').addEventListener('click', function() {
-                if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
-                    showToast('Déconnexion réussie', 'success');
-                    setTimeout(() => {
-                        // Rediriger vers la page d'accueil
-                        document.querySelectorAll('.nav-item').forEach(navItem => {
-                            navItem.classList.remove('active');
-                        });
-                        
-                        document.querySelector('.nav-item[data-section="accueil"]').classList.add('active');
-                        
-                        document.querySelectorAll('.section').forEach(section => {
-                            section.classList.remove('active');
-                        });
-                        
-                        document.getElementById('accueil').classList.add('active');
-                        currentSection = 'accueil';
-                    }, 1000);
-                }
-            });
-            
-            // Bouton changer mot de passe
-            document.getElementById('change-password').addEventListener('click', function() {
-                showToast('Un email de réinitialisation a été envoyé', 'info');
-            });
-            
-            // Initialiser les notations
-            Object.keys(listingRatings).forEach(listingId => {
-                updateRatingDisplay(listingId, listingRatings[listingId]);
-            });
-            
-            // Initialiser les favoris
-            updateFavoriteIcons();
-            
-            // Initialisation de la carte (si on est déjà sur la section carte)
-            if (document.getElementById('carte').classList.contains('active')) {
-                initMap();
+            // Validation
+            if (enteredCode.length !== 6) {
+                showToast('Veuillez entrer le code complet à 6 chiffres', 'error');
+                return;
             }
             
-            console.log("Application Coloco initialisée avec succès !");
-            console.log("Améliorations ajoutées :");
-            console.log("1. Section Profil avec préférences");
-            console.log("2. Système de notation");
-            console.log("3. Partage d'annonces");
-            console.log("4. Notifications toast");
-            console.log("5. Mode sombre/clair");
-            console.log("6. Validation améliorée des formulaires");
+            if (enteredCode !== storedCode) {
+                showToast('Code incorrect. Veuillez réessayer', 'error');
+                return;
+            }
+            
+            // Récupérer l'utilisateur temporaire
+            const tempUser = JSON.parse(localStorage.getItem('coloco_temp_user'));
+            
+            if (!tempUser) {
+                showToast('Session expirée. Veuillez vous réinscrire', 'error');
+                switchAuthTab('register');
+                return;
+            }
+            
+            // Marquer l'utilisateur comme vérifié
+            tempUser.verified = true;
+            
+            // Sauvegarder l'utilisateur dans la liste des utilisateurs
+            const users = JSON.parse(localStorage.getItem('coloco_users')) || [];
+            
+            // Vérifier si l'utilisateur existe déjà
+            const existingUserIndex = users.findIndex(user => user.email === tempUser.email);
+            
+            if (existingUserIndex !== -1) {
+                users[existingUserIndex] = tempUser;
+            } else {
+                users.push(tempUser);
+            }
+            
+            localStorage.setItem('coloco_users', JSON.stringify(users));
+            
+            // Définir comme utilisateur actuel
+            currentUser = tempUser;
+            localStorage.setItem('coloco_current_user', JSON.stringify(tempUser));
+            
+            // Nettoyer les données temporaires
+            localStorage.removeItem('coloco_temp_user');
+            localStorage.removeItem('coloco_verification_code');
+            
+            // Mettre à jour l'interface
+            updateAuthUI();
+            
+            // Fermer le modal
+            hideAuthModal();
+            
+            // Arrêter le compte à rebours
+            clearInterval(verificationTimer);
+            
+            showToast('Votre compte a été vérifié avec succès !', 'success');
+        }
+        
+        // Fonction pour renvoyer le code de vérification
+        function resendVerificationCode() {
+            const resendBtn = document.getElementById('resend-code-btn');
+            
+            if (resendBtn.disabled) {
+                return;
+            }
+            
+            // Générer un nouveau code
+            verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+            localStorage.setItem('coloco_verification_code', verificationCode);
+            
+            // Redémarrer le compte à rebours
+            startVerificationCountdown();
+            
+            // Simuler l'envoi d'email
+            const tempUser = JSON.parse(localStorage.getItem('coloco_temp_user'));
+            if (tempUser) {
+                console.log(`Nouveau code de vérification pour ${tempUser.email}: ${verificationCode}`);
+                showToast(`Un nouveau code a été envoyé à ${tempUser.email}`, 'info');
+            }
+        }
+        
+        // Fonction pour démarrer le compte à rebours de vérification
+        function startVerificationCountdown() {
+            const resendBtn = document.getElementById('resend-code-btn');
+            const countdownElement = document.getElementById('countdown');
+            
+            countdownSeconds = 60;
+            resendBtn.disabled = true;
+            
+            verificationTimer = setInterval(() => {
+                countdownSeconds--;
+                
+                if (countdownSeconds <= 0) {
+                    clearInterval(verificationTimer);
+                    resendBtn.disabled = false;
+                    countdownElement.textContent = '';
+                } else {
+                    countdownElement.textContent = `(${countdownSeconds}s)`;
+                }
+            }, 1000);
+        }
+        
+        // Fonction pour vérifier la force du mot de passe
+        function checkPasswordStrength() {
+            const password = document.getElementById('register-password').value;
+            const strengthBar = document.getElementById('password-strength-bar');
+            
+            let strength = 0;
+            
+            // Longueur minimale
+            if (password.length >= 8) strength++;
+            
+            // Contient des lettres minuscules
+            if (/[a-z]/.test(password)) strength++;
+            
+            // Contient des lettres majuscules
+            if (/[A-Z]/.test(password)) strength++;
+            
+            // Contient des chiffres
+            if (/\d/.test(password)) strength++;
+            
+            // Contient des caractères spéciaux
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+            
+            // Mettre à jour l'affichage
+            strengthBar.className = 'password-strength-bar';
+            
+            if (strength <= 2) {
+                strengthBar.classList.add('password-strength-weak');
+            } else if (strength <= 4) {
+                strengthBar.classList.add('password-strength-medium');
+            } else {
+                strengthBar.classList.add('password-strength-strong');
+            }
+        }
+        
+        // Fonction pour mettre à jour l'interface selon l'état d'authentification
+        function updateAuthUI() {
+            const authButtons = document.getElementById('auth-buttons');
+            const userMenu = document.getElementById('user-menu');
+            const userAvatar = document.querySelector('#user-menu .user-avatar span');
+            
+            if (currentUser) {
+                // Utilisateur connecté
+                authButtons.style.display = 'none';
+                userMenu.style.display = 'block';
+                
+                // Mettre à jour l'avatar avec les initiales
+                const initials = currentUser.name
+                    .split(' ')
+                    .map(part => part[0])
+                    .join('')
+                    .toUpperCase()
+                    .substring(0, 2);
+                
+                userAvatar.textContent = initials;
+                
+                // Mettre à jour le bouton de publication
+                const publishBtn = document.getElementById('publish-ad');
+                const publishFloatingBtn = document.getElementById('publish-btn');
+                
+                if (currentUser.verified) {
+                    if (publishBtn) {
+                        publishBtn.disabled = false;
+                        publishBtn.textContent = 'Publier l\'annonce';
+                        publishBtn.classList.remove('btn-secondary');
+                        publishBtn.classList.add('btn-success');
+                    }
+                    
+                    if (publishFloatingBtn) {
+                        publishFloatingBtn.title = 'Publier une annonce';
+                    }
+                } else {
+                    if (publishBtn) {
+                        publishBtn.disabled = true;
+                        publishBtn.textContent = 'Publier l\'annonce (Compte non vérifié)';
+                        publishBtn.classList.remove('btn-success');
+                        publishBtn.classList.add('btn-secondary');
+                    }
+                    
+                    if (publishFloatingBtn) {
+                        publishFloatingBtn.title = 'Vérifiez votre compte pour publier';
+                    }
+                }
+            } else {
+                // Utilisateur non connecté
+                authButtons.style.display = 'flex';
+                userMenu.style.display = 'none';
+                
+                // Désactiver le bouton de publication
+                const publishBtn = document.getElementById('publish-ad');
+                const publishFloatingBtn = document.getElementById('publish-btn');
+                
+                if (publishBtn) {
+                    publishBtn.disabled = true;
+                    publishBtn.textContent = 'Publier l\'annonce (Connectez-vous)';
+                    publishBtn.classList.remove('btn-success');
+                    publishBtn.classList.add('btn-secondary');
+                }
+                
+                if (publishFloatingBtn) {
+                    publishFloatingBtn.title = 'Connectez-vous pour publier';
+                }
+            }
+        }
+        
+        // Fonction pour afficher les détails d'une annonce
+        function showListingDetails(listingId) {
+            document.getElementById('listing-modal').classList.add('active');
+        }
+        
+        // Fonction pour se déconnecter
+        function logout() {
+            if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
+                currentUser = null;
+                localStorage.removeItem('coloco_current_user');
+                updateAuthUI();
+                showToast('Vous avez été déconnecté', 'info');
+            }
+        }
+        
+        // Attacher la fonction de déconnexion à l'avatar
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('#user-profile-btn')) {
+                if (currentUser) {
+                    if (confirm('Voulez-vous vous déconnecter ?')) {
+                        logout();
+                    }
+                }
+            }
         });
         
-        // Initialisation de la carte
-        function initMap() {
-            // Centre sur Alger par défaut
-            const algerCenter = [36.7525, 3.04197];
-            
-            // Créer la carte
-            map = L.map('map').setView(algerCenter, 12);
-            
-            // Ajouter les tuiles OpenStreetMap
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-                maxZoom: 18,
-            }).addTo(map);
-            
-            // Ajouter les marqueurs pour chaque annonce
-            listingsData.forEach(listing => {
-                addMarkerToMap(listing);
-            });
-            
-            // Contrôles de la carte
-            document.getElementById('locate-me').addEventListener('click', function() {
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(function(position) {
-                        const userLat = position.coords.latitude;
-                        const userLng = position.coords.longitude;
-                        
-                        map.setView([userLat, userLng], 14);
-                        
-                        // Ajouter un marqueur pour la position de l'utilisateur
-                        L.marker([userLat, userLng], {
-                            icon: L.divIcon({
-                                html: '<div class="custom-marker" style="background-color: #28a745;"><i class="fas fa-user"></i></div>',
-                                iconSize: [40, 40],
-                                className: 'custom-marker-container'
-                            })
-                        }).addTo(map)
-                        .bindPopup('Vous êtes ici')
-                        .openPopup();
-                        
-                        showToast('Localisation détectée', 'success');
-                    }, function() {
-                        showToast('Impossible de détecter votre position', 'error');
-                    });
-                } else {
-                    showToast("La géolocalisation n'est pas supportée par votre navigateur.", 'error');
+        // Initialiser quelques utilisateurs de test (à enlever en production)
+        function initTestUsers() {
+            const testUsers = [
+                {
+                    id: '1',
+                    name: 'Yassine A.',
+                    email: 'yassine@test.com',
+                    phone: '+213 123 45 67 89',
+                    password: btoa('Test1234'),
+                    verified: true,
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: '2',
+                    name: 'Karim M.',
+                    email: 'karim@test.com',
+                    phone: '+213 987 65 43 21',
+                    password: btoa('Test1234'),
+                    verified: true,
+                    createdAt: new Date().toISOString()
                 }
-            });
-            
-            document.getElementById('zoom-in').addEventListener('click', function() {
-                map.zoomIn();
-            });
-            
-            document.getElementById('zoom-out').addEventListener('click', function() {
-                map.zoomOut();
-            });
-        }
-        
-        // Ajouter un marqueur à la carte
-        function addMarkerToMap(listing) {
-            // Créer un marqueur personnalisé
-            const marker = L.marker([listing.lat, listing.lng], {
-                icon: L.divIcon({
-                    html: `<div class="custom-marker" style="background-color: ${favoriteListings.includes(listing.id.toString()) ? '#ff4757' : 'var(--primary)'};">
-                              <i class="fas fa-home"></i>
-                           </div>`,
-                    iconSize: [40, 40],
-                    className: 'custom-marker-container'
-                })
-            }).addTo(map);
-            
-            // Ajouter un popup au marqueur
-            marker.bindPopup(`
-                <div class="marker-popup">
-                    <div class="popup-title">${listing.title}</div>
-                    <div class="popup-price">${listing.price.toLocaleString('fr-DZ')} DA</div>
-                    <div class="popup-location">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span>${listing.location}</span>
-                    </div>
-                    <p>${listing.description.substring(0, 100)}...</p>
-                    <div class="rating">
-                        ${Array(5).fill().map((_, i) => 
-                            `<i class="${i < listing.rating ? 'fas' : 'far'} fa-star" style="color: #ffc107;"></i>`
-                        ).join('')}
-                        <span style="margin-left: 5px;">${listing.rating.toFixed(1)}</span>
-                    </div>
-                    <button class="popup-btn" onclick="showListingDetails(${listing.id})">Voir les détails</button>
-                </div>
-            `);
-            
-            // Stocker le marqueur
-            markers.push(marker);
-            
-            // Ouvrir le popup au clic
-            marker.on('click', function() {
-                this.openPopup();
-            });
-        }
-        
-        // Afficher les détails d'une annonce
-        function showListingDetails(listingId) {
-            const listing = listingsData.find(l => l.id == listingId);
-            
-            if (!listing) return;
-            
-            // Mettre à jour le modal avec les données de l'annonce
-            const modal = document.getElementById('listing-modal');
-            const modalContent = modal.querySelector('.modal-content');
-            
-            modalContent.querySelector('.listing-title').textContent = listing.title;
-            modalContent.querySelector('.listing-price').textContent = listing.price.toLocaleString('fr-DZ') + ' DA';
-            modalContent.querySelector('.listing-location span').textContent = listing.location;
-            modalContent.querySelector('.listing-details p').textContent = listing.description;
-            modalContent.querySelector('.feature:nth-child(2) span').textContent = listing.surface + ' m²';
-            modalContent.querySelector('.feature:nth-child(3) span').textContent = listing.roommates + ' colocataires';
-            
-            // Mettre à jour les étoiles
-            const ratingEl = modalContent.querySelector('.rating');
-            ratingEl.setAttribute('data-listing-id', listing.id);
-            const stars = ratingEl.querySelectorAll('.rating-star');
-            stars.forEach((star, index) => {
-                star.setAttribute('data-value', index + 1);
-                if (index < listing.rating) {
-                    star.classList.remove('far');
-                    star.classList.add('fas', 'filled');
-                } else {
-                    star.classList.remove('fas', 'filled');
-                    star.classList.add('far');
-                }
-            });
-            ratingEl.querySelector('.rating-value').textContent = listing.rating.toFixed(1);
-            
-            // Mettre à jour le bouton de partage
-            const shareBtn = modalContent.querySelector('.share-btn');
-            shareBtn.setAttribute('data-listing-id', listing.id);
-            
-            // Mettre à jour l'image de fond (simulée)
-            const imageUrls = [
-                'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-                'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
             ];
             
-            modalContent.querySelector('.listing-image').style.backgroundImage = `url('${imageUrls[listingId % imageUrls.length]}')`;
-            
-            // Afficher le modal
-            modal.classList.add('active');
-            
-            // Centrer la carte sur cette annonce si on est sur la section carte
-            if (currentSection === 'carte' && map) {
-                map.setView([listing.lat, listing.lng], 14);
-                
-                // Ouvrir le popup du marqueur correspondant
-                markers.forEach(marker => {
-                    const markerPos = marker.getLatLng();
-                    if (markerPos.lat === listing.lat && markerPos.lng === listing.lng) {
-                        marker.openPopup();
-                    }
-                });
+            if (!localStorage.getItem('coloco_users')) {
+                localStorage.setItem('coloco_users', JSON.stringify(testUsers));
             }
         }
         
-        // Rendre les fonctions accessibles globalement pour les popups
-        window.showListingDetails = showListingDetails;
+        // Initialiser les utilisateurs de test
+        initTestUsers();
     </script>
 </body>
 </html>
