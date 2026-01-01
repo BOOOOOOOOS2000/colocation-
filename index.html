@@ -21,8 +21,26 @@
             --gray: #6c757d;
             --light-gray: #e9ecef;
             --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
             --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             --border-radius: 12px;
+            --transition: all 0.3s ease;
+        }
+        
+        /* Mode sombre */
+        .dark-mode {
+            --primary: #5d8cc9;
+            --primary-dark: #4a6fa5;
+            --secondary: #ff9c8a;
+            --light: #2d3748;
+            --dark: #f8f9fa;
+            --gray: #a0aec0;
+            --light-gray: #4a5568;
+            --success: #38a169;
+            --warning: #d69e2e;
+            --danger: #e53e3e;
+            --shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }
         
         /* Reset et styles de base */
@@ -38,6 +56,11 @@
             color: var(--dark);
             overflow-x: hidden;
             height: 100vh;
+            transition: var(--transition);
+        }
+        
+        body.dark-mode {
+            background-color: #1a202c;
         }
         
         /* Application container */
@@ -49,6 +72,11 @@
             background-color: white;
             box-shadow: var(--shadow);
             overflow: hidden;
+            transition: var(--transition);
+        }
+        
+        .dark-mode .app-container {
+            background-color: #2d3748;
         }
         
         /* En-tête */
@@ -62,6 +90,7 @@
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
             z-index: 100;
             position: relative;
+            transition: var(--transition);
         }
         
         .logo {
@@ -79,6 +108,31 @@
             font-weight: 700;
         }
         
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+        
+        .theme-toggle:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
         .user-avatar {
             width: 40px;
             height: 40px;
@@ -89,16 +143,115 @@
             justify-content: center;
             font-weight: bold;
             cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .user-avatar:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Notification toast */
+        .toast-container {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .toast {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 15px 20px;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            min-width: 300px;
+            transform: translateX(400px);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        
+        .toast.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        
+        .toast.success {
+            border-left: 4px solid var(--success);
+        }
+        
+        .toast.error {
+            border-left: 4px solid var(--danger);
+        }
+        
+        .toast.warning {
+            border-left: 4px solid var(--warning);
+        }
+        
+        .toast.info {
+            border-left: 4px solid var(--primary);
+        }
+        
+        .toast-icon {
+            font-size: 1.5rem;
+        }
+        
+        .toast.success .toast-icon {
+            color: var(--success);
+        }
+        
+        .toast.error .toast-icon {
+            color: var(--danger);
+        }
+        
+        .toast.warning .toast-icon {
+            color: var(--warning);
+        }
+        
+        .toast.info .toast-icon {
+            color: var(--primary);
+        }
+        
+        .toast-content {
+            flex: 1;
+        }
+        
+        .toast-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .toast-message {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+        
+        .toast-close {
+            background: none;
+            border: none;
+            color: var(--gray);
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 5px;
         }
         
         /* Navigation */
         .app-nav {
             display: flex;
-            background-color: white;
+            background-color: var(--light);
             border-bottom: 1px solid var(--light-gray);
             overflow-x: auto;
             white-space: nowrap;
             padding: 0 10px;
+            transition: var(--transition);
+        }
+        
+        .dark-mode .app-nav {
+            background-color: #4a5568;
         }
         
         .nav-item {
@@ -111,6 +264,10 @@
             cursor: pointer;
             flex: 1;
             min-width: 120px;
+        }
+        
+        .nav-item:hover {
+            color: var(--primary);
         }
         
         .nav-item.active {
@@ -127,6 +284,7 @@
             height: calc(100vh - 140px);
             overflow-y: auto;
             padding-bottom: 20px;
+            transition: var(--transition);
         }
         
         /* Section active */
@@ -152,6 +310,11 @@
             background: linear-gradient(135deg, #f5f7fa, #e4edf5);
             border-radius: 0 0 30px 30px;
             margin-bottom: 20px;
+            transition: var(--transition);
+        }
+        
+        .dark-mode .hero {
+            background: linear-gradient(135deg, #4a5568, #2d3748);
         }
         
         .hero h2 {
@@ -177,7 +340,7 @@
             font-weight: 600;
             font-size: 1rem;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: var(--transition);
             text-align: center;
             box-shadow: 0 4px 8px rgba(74, 111, 165, 0.2);
         }
@@ -196,17 +359,88 @@
             background-color: #ff6b4a;
         }
         
+        .btn-small {
+            padding: 8px 15px;
+            font-size: 0.9rem;
+        }
+        
         .btn-full {
             width: 100%;
         }
         
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            box-shadow: none;
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        /* Rating stars */
+        .rating {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin: 5px 0;
+        }
+        
+        .rating-stars {
+            display: flex;
+            gap: 2px;
+        }
+        
+        .rating-star {
+            color: #ddd;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+        
+        .rating-star.filled {
+            color: var(--warning);
+        }
+        
+        .rating-value {
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-left: 5px;
+        }
+        
+        /* Share button */
+        .share-btn {
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: var(--transition);
+        }
+        
+        .share-btn:hover {
+            background-color: var(--light-gray);
+        }
+        
         /* Filtres */
         .filters-container {
-            background-color: white;
+            background-color: var(--light);
             border-radius: var(--border-radius);
             padding: 20px;
             box-shadow: var(--shadow);
             margin-bottom: 20px;
+            transition: var(--transition);
+        }
+        
+        .dark-mode .filters-container {
+            background-color: #4a5568;
         }
         
         .filters-header {
@@ -238,6 +472,15 @@
             border-radius: 8px;
             font-size: 1rem;
             background-color: white;
+            color: var(--dark);
+            transition: var(--transition);
+        }
+        
+        .dark-mode .filter-group input,
+        .dark-mode .filter-group select {
+            background-color: #2d3748;
+            border-color: #718096;
+            color: var(--dark);
         }
         
         .filter-options {
@@ -267,17 +510,19 @@
         }
         
         .listing-card {
-            background-color: white;
+            background-color: var(--light);
             border-radius: var(--border-radius);
             overflow: hidden;
             box-shadow: var(--shadow);
             margin-bottom: 20px;
-            transition: transform 0.3s;
+            transition: var(--transition);
             cursor: pointer;
+            position: relative;
         }
         
         .listing-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
         }
         
         .listing-image {
@@ -332,6 +577,15 @@
             gap: 5px;
         }
         
+        .listing-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--light-gray);
+        }
+        
         .favorite-icon {
             position: absolute;
             top: 15px;
@@ -346,6 +600,8 @@
             justify-content: center;
             font-size: 1.2rem;
             cursor: pointer;
+            transition: var(--transition);
+            z-index: 2;
         }
         
         .favorite-icon.active {
@@ -360,11 +616,16 @@
         
         .map-header {
             padding: 15px 20px;
-            background-color: white;
+            background-color: var(--light);
             border-bottom: 1px solid var(--light-gray);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            transition: var(--transition);
+        }
+        
+        .dark-mode .map-header {
+            background-color: #4a5568;
         }
         
         .map-header h3 {
@@ -408,7 +669,7 @@
             font-size: 1.2rem;
             color: var(--primary);
             cursor: pointer;
-            transition: all 0.3s;
+            transition: var(--transition);
         }
         
         .map-control-btn:hover {
@@ -430,7 +691,7 @@
             border: 3px solid white;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
             cursor: pointer;
-            transition: all 0.3s;
+            transition: var(--transition);
         }
         
         .custom-marker:hover {
@@ -489,60 +750,182 @@
             text-decoration: none;
         }
         
-        /* Section Détails */
-        .detail-images {
-            height: 250px;
-            background-color: var(--light-gray);
-            border-radius: var(--border-radius);
-            margin-bottom: 20px;
-            overflow: hidden;
-            position: relative;
-        }
-        
-        .detail-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .detail-info {
-            background-color: white;
+        /* Section Profil */
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background-color: var(--light);
             border-radius: var(--border-radius);
             padding: 25px;
-            box-shadow: var(--shadow);
             margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
         }
         
-        .detail-title {
+        .dark-mode .profile-header {
+            background-color: #4a5568;
+        }
+        
+        .avatar-large {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+        
+        .profile-info {
+            flex: 1;
+        }
+        
+        .profile-info h3 {
             font-size: 1.5rem;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
             color: var(--primary);
         }
         
-        .detail-price {
-            color: var(--secondary);
-            font-size: 1.8rem;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-        
-        .detail-description {
-            line-height: 1.6;
-            margin-bottom: 20px;
+        .profile-info p {
             color: var(--gray);
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
-        .detail-features {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
+        .profile-rating {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        
+        .profile-rating i {
+            color: var(--warning);
+        }
+        
+        .profile-rating span {
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-left: 5px;
+        }
+        
+        .profile-sections {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .profile-section {
+            background-color: var(--light);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        
+        .dark-mode .profile-section {
+            background-color: #4a5568;
+        }
+        
+        .profile-section h4 {
+            color: var(--primary);
             margin-bottom: 20px;
-        }
-        
-        .detail-feature {
             display: flex;
             align-items: center;
             gap: 10px;
+        }
+        
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .history-item:last-child {
+            border-bottom: none;
+        }
+        
+        .status {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .status.confirmed {
+            background-color: rgba(40, 167, 69, 0.1);
+            color: var(--success);
+        }
+        
+        .status.pending {
+            background-color: rgba(255, 193, 7, 0.1);
+            color: var(--warning);
+        }
+        
+        .preference {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .preference:last-child {
+            border-bottom: none;
+        }
+        
+        /* Toggle switch */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: var(--primary);
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
         }
         
         /* Section Chat */
@@ -550,10 +933,15 @@
             display: flex;
             flex-direction: column;
             height: 500px;
-            background-color: white;
+            background-color: var(--light);
             border-radius: var(--border-radius);
             overflow: hidden;
             box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        
+        .dark-mode .chat-container {
+            background-color: #4a5568;
         }
         
         .chat-header {
@@ -606,6 +994,7 @@
             align-self: flex-start;
             background-color: var(--light-gray);
             border-bottom-left-radius: 5px;
+            color: var(--dark);
         }
         
         .message.sent {
@@ -620,6 +1009,7 @@
             padding: 15px;
             background-color: var(--light-gray);
             gap: 10px;
+            transition: var(--transition);
         }
         
         .chat-input input {
@@ -628,6 +1018,14 @@
             border: 1px solid #ddd;
             border-radius: 25px;
             font-size: 1rem;
+            background-color: white;
+            color: var(--dark);
+        }
+        
+        .dark-mode .chat-input input {
+            background-color: #2d3748;
+            border-color: #718096;
+            color: var(--dark);
         }
         
         .chat-input button {
@@ -646,11 +1044,16 @@
         
         /* Section Publication */
         .publish-form {
-            background-color: white;
+            background-color: var(--light);
             border-radius: var(--border-radius);
             padding: 25px;
             box-shadow: var(--shadow);
             margin-bottom: 20px;
+            transition: var(--transition);
+        }
+        
+        .dark-mode .publish-form {
+            background-color: #4a5568;
         }
         
         .form-group {
@@ -671,6 +1074,16 @@
             border-radius: 8px;
             font-size: 1rem;
             background-color: white;
+            color: var(--dark);
+            transition: var(--transition);
+        }
+        
+        .dark-mode .form-group input,
+        .dark-mode .form-group select,
+        .dark-mode .form-group textarea {
+            background-color: #2d3748;
+            border-color: #718096;
+            color: var(--dark);
         }
         
         .form-group textarea {
@@ -685,7 +1098,7 @@
             text-align: center;
             color: var(--gray);
             cursor: pointer;
-            transition: all 0.3s;
+            transition: var(--transition);
         }
         
         .photo-upload:hover {
@@ -709,11 +1122,16 @@
         /* Barre de recherche */
         .search-bar {
             padding: 15px 20px;
-            background-color: white;
+            background-color: var(--light);
             display: flex;
             gap: 10px;
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
             margin-bottom: 20px;
+            transition: var(--transition);
+        }
+        
+        .dark-mode .search-bar {
+            background-color: #4a5568;
         }
         
         .search-input {
@@ -722,6 +1140,14 @@
             border: 1px solid var(--light-gray);
             border-radius: 8px;
             font-size: 1rem;
+            background-color: white;
+            color: var(--dark);
+        }
+        
+        .dark-mode .search-input {
+            background-color: #2d3748;
+            border-color: #718096;
+            color: var(--dark);
         }
         
         /* Modal pour les détails */
@@ -744,13 +1170,18 @@
         }
         
         .modal-content {
-            background-color: white;
+            background-color: var(--light);
             border-radius: var(--border-radius);
             width: 100%;
             max-width: 500px;
             max-height: 90vh;
             overflow-y: auto;
             position: relative;
+            transition: var(--transition);
+        }
+        
+        .dark-mode .modal-content {
+            background-color: #4a5568;
         }
         
         .modal-close {
@@ -760,7 +1191,7 @@
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background-color: white;
+            background-color: var(--light);
             border: none;
             font-size: 1.5rem;
             color: var(--gray);
@@ -769,6 +1200,65 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: var(--transition);
+        }
+        
+        .dark-mode .modal-close {
+            background-color: #2d3748;
+        }
+        
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 30px;
+            padding: 20px 0;
+        }
+        
+        .pagination-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--light);
+            border: 1px solid var(--light-gray);
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .pagination-btn.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .pagination-btn:hover:not(.disabled) {
+            background-color: var(--light-gray);
+        }
+        
+        .pagination-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        /* Loading state */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid var(--light-gray);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
         
         /* Responsive */
@@ -784,10 +1274,23 @@
             .map-container {
                 height: calc(100vh - 200px);
             }
+            
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .toast {
+                min-width: calc(100vw - 40px);
+                right: 10px;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Toast container -->
+    <div class="toast-container"></div>
+    
     <div class="app-container">
         <!-- En-tête de l'application -->
         <header class="app-header">
@@ -795,8 +1298,13 @@
                 <i class="fas fa-home"></i>
                 <h1>Coloco</h1>
             </div>
-            <div class="user-avatar">
-                <span>YA</span>
+            <div class="header-controls">
+                <button class="theme-toggle" id="theme-toggle" aria-label="Changer de thème">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <div class="user-avatar" id="user-profile-btn">
+                    <span>YA</span>
+                </div>
             </div>
         </header>
         
@@ -816,6 +1324,9 @@
             </div>
             <div class="nav-item" data-section="chat">
                 <i class="fas fa-comments"></i> Messages
+            </div>
+            <div class="nav-item" data-section="profil">
+                <i class="fas fa-user"></i> Profil
             </div>
         </nav>
         
@@ -900,6 +1411,22 @@
                                     <span>3 colocataires</span>
                                 </div>
                             </div>
+                            <div class="listing-footer">
+                                <div class="rating" data-listing-id="1">
+                                    <div class="rating-stars">
+                                        <i class="fas fa-star rating-star filled" data-value="1"></i>
+                                        <i class="fas fa-star rating-star filled" data-value="2"></i>
+                                        <i class="fas fa-star rating-star filled" data-value="3"></i>
+                                        <i class="fas fa-star rating-star filled" data-value="4"></i>
+                                        <i class="far fa-star rating-star" data-value="5"></i>
+                                    </div>
+                                    <span class="rating-value">4.0</span>
+                                </div>
+                                <button class="share-btn" data-listing-id="1">
+                                    <i class="fas fa-share-alt"></i>
+                                    <span>Partager</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                     
@@ -932,8 +1459,37 @@
                                     <span>2 colocataires</span>
                                 </div>
                             </div>
+                            <div class="listing-footer">
+                                <div class="rating" data-listing-id="2">
+                                    <div class="rating-stars">
+                                        <i class="fas fa-star rating-star filled" data-value="1"></i>
+                                        <i class="fas fa-star rating-star filled" data-value="2"></i>
+                                        <i class="fas fa-star rating-star filled" data-value="3"></i>
+                                        <i class="far fa-star rating-star" data-value="4"></i>
+                                        <i class="far fa-star rating-star" data-value="5"></i>
+                                    </div>
+                                    <span class="rating-value">3.0</span>
+                                </div>
+                                <button class="share-btn" data-listing-id="2">
+                                    <i class="fas fa-share-alt"></i>
+                                    <span>Partager</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
+                </div>
+                
+                <!-- Pagination -->
+                <div class="pagination">
+                    <button class="pagination-btn disabled">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="pagination-btn active">1</button>
+                    <button class="pagination-btn">2</button>
+                    <button class="pagination-btn">3</button>
+                    <button class="pagination-btn">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
                 </div>
             </section>
             
@@ -1050,6 +1606,22 @@
                             <span>Hydra, Alger</span>
                         </div>
                         <p>Chambre disponible dans un appartement de 4 chambres avec terrasse et vue mer. Idéal pour étudiant ou jeune professionnel.</p>
+                        <div class="listing-footer">
+                            <div class="rating" data-listing-id="1">
+                                <div class="rating-stars">
+                                    <i class="fas fa-star rating-star filled" data-value="1"></i>
+                                    <i class="fas fa-star rating-star filled" data-value="2"></i>
+                                    <i class="fas fa-star rating-star filled" data-value="3"></i>
+                                    <i class="fas fa-star rating-star filled" data-value="4"></i>
+                                    <i class="far fa-star rating-star" data-value="5"></i>
+                                </div>
+                                <span class="rating-value">4.0</span>
+                            </div>
+                            <button class="share-btn" data-listing-id="1">
+                                <i class="fas fa-share-alt"></i>
+                                <span>Partager</span>
+                            </button>
+                        </div>
                         <div style="display: flex; gap: 10px; margin-top: 15px;">
                             <button class="btn" style="flex: 1; padding: 10px;">Contacter</button>
                             <button class="btn btn-secondary" style="flex: 1; padding: 10px;">Visiter</button>
@@ -1117,29 +1689,99 @@
                 </div>
             </section>
             
-            <!-- Section Publication (cachée dans la navigation mais accessible via bouton) -->
+            <!-- Section Profil -->
+            <section id="profil" class="section">
+                <div class="profile-header">
+                    <div class="profile-avatar">
+                        <div class="avatar-large">YA</div>
+                        <button class="btn btn-small btn-outline" id="change-avatar" style="margin-top: 10px;">Changer</button>
+                    </div>
+                    <div class="profile-info">
+                        <h3>Yassine A.</h3>
+                        <p><i class="fas fa-envelope"></i> yassine@example.com</p>
+                        <p><i class="fas fa-phone"></i> +213 123 45 67 89</p>
+                        <div class="profile-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                            <span>4.0/5.0</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="profile-sections">
+                    <div class="profile-section">
+                        <h4><i class="fas fa-history"></i> Historique des visites</h4>
+                        <div class="history-item">
+                            <div>Colocation Hydra</div>
+                            <div>15/10/2023</div>
+                            <div class="status confirmed">Confirmée</div>
+                        </div>
+                        <div class="history-item">
+                            <div>Appartement Bab Ezzouar</div>
+                            <div>12/10/2023</div>
+                            <div class="status pending">En attente</div>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-section">
+                        <h4><i class="fas fa-cog"></i> Préférences</h4>
+                        <div class="preference">
+                            <span>Notifications par email</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked id="email-notifications">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="preference">
+                            <span>Mode sombre</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="dark-mode-toggle">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="preference">
+                            <span>Notifications push</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked id="push-notifications">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-section">
+                        <h4><i class="fas fa-shield-alt"></i> Sécurité</h4>
+                        <button class="btn btn-full" id="change-password">Changer le mot de passe</button>
+                        <button class="btn btn-full btn-secondary" id="logout" style="margin-top: 10px;">Se déconnecter</button>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Section Publication -->
             <section id="publication" class="section">
                 <h3 style="margin-bottom: 15px; color: var(--primary);">Publier une annonce</h3>
                 
                 <div class="publish-form">
                     <div class="form-group">
                         <label>Titre de l'annonce *</label>
-                        <input type="text" placeholder="Ex: Colocation spacieuse à Hydra" id="ad-title">
+                        <input type="text" placeholder="Ex: Colocation spacieuse à Hydra" id="ad-title" required>
                     </div>
                     
                     <div class="form-group">
                         <label>Description *</label>
-                        <textarea placeholder="Décrivez votre logement, l'ambiance, les colocataires..." id="ad-description"></textarea>
+                        <textarea placeholder="Décrivez votre logement, l'ambiance, les colocataires..." id="ad-description" required></textarea>
                     </div>
                     
                     <div class="form-group">
                         <label>Adresse *</label>
-                        <input type="text" placeholder="Adresse complète" id="ad-address">
+                        <input type="text" placeholder="Adresse complète" id="ad-address" required>
                     </div>
                     
                     <div class="form-group">
                         <label>Loyer mensuel (DA) *</label>
-                        <input type="number" placeholder="25000" id="ad-price">
+                        <input type="number" placeholder="25000" id="ad-price" min="0" required>
                     </div>
                     
                     <div class="form-group">
@@ -1217,6 +1859,22 @@
                                 <span>3 colocataires</span>
                             </div>
                         </div>
+                        <div class="listing-footer">
+                            <div class="rating" data-listing-id="1">
+                                <div class="rating-stars">
+                                    <i class="fas fa-star rating-star filled" data-value="1"></i>
+                                    <i class="fas fa-star rating-star filled" data-value="2"></i>
+                                    <i class="fas fa-star rating-star filled" data-value="3"></i>
+                                    <i class="fas fa-star rating-star filled" data-value="4"></i>
+                                    <i class="far fa-star rating-star" data-value="5"></i>
+                                </div>
+                                <span class="rating-value">4.0</span>
+                            </div>
+                            <button class="share-btn" data-listing-id="1">
+                                <i class="fas fa-share-alt"></i>
+                                <span>Partager</span>
+                            </button>
+                        </div>
                         <div class="detail-features" style="margin-top: 20px;">
                             <div class="detail-feature">
                                 <i class="fas fa-wifi"></i>
@@ -1248,9 +1906,12 @@
     <script>
         // Variables globales
         let currentSection = 'accueil';
-        let favoriteListings = ['1']; // ID des annonces favorites
+        let favoriteListings = JSON.parse(localStorage.getItem('favoriteListings') || '["1"]');
+        let listingRatings = JSON.parse(localStorage.getItem('listingRatings') || '{"1": 4, "2": 3}');
         let map = null;
         let markers = [];
+        let currentPage = 1;
+        const itemsPerPage = 2;
         
         // Données des annonces (simulées)
         const listingsData = [
@@ -1268,7 +1929,8 @@
                 rooms: 1,
                 roommates: 3,
                 features: ["Meublé", "WiFi", "Climatisation", "Parking"],
-                isFavorite: true
+                isFavorite: true,
+                rating: 4
             },
             {
                 id: 2,
@@ -1284,7 +1946,8 @@
                 rooms: 1,
                 roommates: 2,
                 features: ["Meublé", "WiFi", "Climatisation"],
-                isFavorite: false
+                isFavorite: false,
+                rating: 3
             },
             {
                 id: 3,
@@ -1300,7 +1963,8 @@
                 rooms: 1,
                 roommates: 2,
                 features: ["Meublé", "WiFi", "Climatisation", "Terrasse"],
-                isFavorite: false
+                isFavorite: false,
+                rating: 5
             },
             {
                 id: 4,
@@ -1316,7 +1980,8 @@
                 rooms: 1,
                 roommates: 4,
                 features: ["Meublé", "WiFi", "Jardin"],
-                isFavorite: false
+                isFavorite: false,
+                rating: 4
             },
             {
                 id: 5,
@@ -1332,12 +1997,186 @@
                 rooms: 1,
                 roommates: 1,
                 features: ["Meublé", "WiFi", "Climatisation", "Sécurité"],
-                isFavorite: false
+                isFavorite: false,
+                rating: 4
             }
         ];
         
+        // Fonction pour afficher une notification
+        function showToast(message, type = 'info', duration = 5000) {
+            const toastContainer = document.querySelector('.toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            const icons = {
+                success: 'fas fa-check-circle',
+                error: 'fas fa-exclamation-circle',
+                warning: 'fas fa-exclamation-triangle',
+                info: 'fas fa-info-circle'
+            };
+            
+            toast.innerHTML = `
+                <i class="${icons[type]} toast-icon"></i>
+                <div class="toast-content">
+                    <div class="toast-title">${type.charAt(0).toUpperCase() + type.slice(1)}</div>
+                    <div class="toast-message">${message}</div>
+                </div>
+                <button class="toast-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            
+            toastContainer.appendChild(toast);
+            
+            // Afficher le toast
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 10);
+            
+            // Fermer le toast au clic
+            toast.querySelector('.toast-close').addEventListener('click', () => {
+                hideToast(toast);
+            });
+            
+            // Fermer automatiquement après la durée spécifiée
+            if (duration) {
+                setTimeout(() => {
+                    hideToast(toast);
+                }, duration);
+            }
+            
+            return toast;
+        }
+        
+        function hideToast(toast) {
+            toast.classList.remove('show');
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.parentNode.removeChild(toast);
+                }
+            }, 300);
+        }
+        
+        // Fonction pour basculer le mode sombre
+        function toggleDarkMode() {
+            const isDarkMode = document.body.classList.toggle('dark-mode');
+            localStorage.setItem('darkMode', isDarkMode);
+            
+            const themeToggle = document.getElementById('theme-toggle');
+            if (isDarkMode) {
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                themeToggle.setAttribute('aria-label', 'Activer le mode clair');
+            } else {
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+                themeToggle.setAttribute('aria-label', 'Activer le mode sombre');
+            }
+            
+            showToast(`Mode ${isDarkMode ? 'sombre' : 'clair'} activé`, 'info', 2000);
+        }
+        
+        // Fonction pour évaluer une annonce
+        function rateListing(listingId, rating) {
+            listingRatings[listingId] = rating;
+            localStorage.setItem('listingRatings', JSON.stringify(listingRatings));
+            
+            // Mettre à jour l'affichage
+            updateRatingDisplay(listingId, rating);
+            
+            showToast('Merci pour votre évaluation !', 'success');
+        }
+        
+        // Fonction pour mettre à jour l'affichage des étoiles
+        function updateRatingDisplay(listingId, rating) {
+            const ratingElements = document.querySelectorAll(`.rating[data-listing-id="${listingId}"]`);
+            
+            ratingElements.forEach(ratingEl => {
+                const stars = ratingEl.querySelectorAll('.rating-star');
+                const ratingValue = ratingEl.querySelector('.rating-value');
+                
+                stars.forEach((star, index) => {
+                    if (index < rating) {
+                        star.classList.remove('far');
+                        star.classList.add('fas', 'filled');
+                    } else {
+                        star.classList.remove('fas', 'filled');
+                        star.classList.add('far');
+                    }
+                });
+                
+                if (ratingValue) {
+                    ratingValue.textContent = rating.toFixed(1);
+                }
+            });
+        }
+        
+        // Fonction pour partager une annonce
+        function shareListing(listingId) {
+            const listing = listingsData.find(l => l.id == listingId);
+            if (!listing) return;
+            
+            const shareUrl = `${window.location.origin}?listing=${listingId}`;
+            const shareText = `Découvrez cette colocation: ${listing.title} - ${listing.price.toLocaleString('fr-DZ')} DA`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: listing.title,
+                    text: shareText,
+                    url: shareUrl,
+                })
+                .then(() => showToast('Annonce partagée avec succès!', 'success'))
+                .catch(err => console.log('Erreur de partage:', err));
+            } else {
+                // Fallback: copier dans le presse-papier
+                navigator.clipboard.writeText(`${shareText}\n${shareUrl}`)
+                    .then(() => showToast('Lien copié dans le presse-papier!', 'success'))
+                    .catch(err => {
+                        console.error('Erreur de copie:', err);
+                        showToast('Impossible de copier le lien', 'error');
+                    });
+            }
+        }
+        
+        // Fonction pour basculer les favoris
+        function toggleFavorite(listingId) {
+            const index = favoriteListings.indexOf(listingId.toString());
+            if (index === -1) {
+                favoriteListings.push(listingId.toString());
+                showToast('Ajouté aux favoris', 'success');
+            } else {
+                favoriteListings.splice(index, 1);
+                showToast('Retiré des favoris', 'info');
+            }
+            
+            localStorage.setItem('favoriteListings', JSON.stringify(favoriteListings));
+            updateFavoriteIcons();
+        }
+        
+        // Fonction pour mettre à jour les icônes de favoris
+        function updateFavoriteIcons() {
+            document.querySelectorAll('.favorite-icon').forEach(icon => {
+                const listingId = icon.closest('.listing-card').getAttribute('data-listing-id');
+                const isFavorite = favoriteListings.includes(listingId);
+                
+                if (isFavorite) {
+                    icon.classList.add('active');
+                    icon.innerHTML = '<i class="fas fa-heart"></i>';
+                } else {
+                    icon.classList.remove('active');
+                    icon.innerHTML = '<i class="far fa-heart"></i>';
+                }
+            });
+        }
+        
         // Initialisation au chargement
         document.addEventListener('DOMContentLoaded', function() {
+            // Initialiser le mode sombre
+            const darkMode = localStorage.getItem('darkMode') === 'true';
+            if (darkMode) {
+                document.body.classList.add('dark-mode');
+                document.getElementById('theme-toggle').innerHTML = '<i class="fas fa-sun"></i>';
+                document.getElementById('dark-mode-toggle').checked = true;
+            }
+            
             // Initialiser le slider de prix
             const rentSlider = document.querySelector('input[type="range"]');
             const rentValue = document.getElementById('rent-value');
@@ -1377,17 +2216,27 @@
             // Gestion des favoris
             document.querySelectorAll('.favorite-icon').forEach(icon => {
                 icon.addEventListener('click', function(e) {
-                    e.stopPropagation(); // Empêcher la propagation à la carte
-                    this.classList.toggle('active');
-                    const heartIcon = this.querySelector('i');
-                    
-                    if (this.classList.contains('active')) {
-                        heartIcon.classList.remove('far');
-                        heartIcon.classList.add('fas');
-                    } else {
-                        heartIcon.classList.remove('fas');
-                        heartIcon.classList.add('far');
-                    }
+                    e.stopPropagation();
+                    const listingId = this.closest('.listing-card').getAttribute('data-listing-id');
+                    toggleFavorite(listingId);
+                });
+            });
+            
+            // Initialiser les étoiles de notation
+            document.querySelectorAll('.rating-star').forEach(star => {
+                star.addEventListener('click', function() {
+                    const rating = parseInt(this.getAttribute('data-value'));
+                    const listingId = this.closest('.rating').getAttribute('data-listing-id');
+                    rateListing(listingId, rating);
+                });
+            });
+            
+            // Gestion des boutons de partage
+            document.querySelectorAll('.share-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const listingId = this.getAttribute('data-listing-id');
+                    shareListing(listingId);
                 });
             });
             
@@ -1470,8 +2319,7 @@
             
             // Appliquer les filtres
             document.getElementById('apply-filters').addEventListener('click', function() {
-                alert('Filtres appliqués ! Affichage des résultats correspondants...');
-                // Ici, on filtrerait normalement les annonces
+                showToast('Filtres appliqués !', 'success');
             });
             
             // Bouton "Explorer les annonces"
@@ -1498,8 +2346,8 @@
             // Ouvrir les détails d'une annonce
             document.querySelectorAll('.listing-card').forEach(card => {
                 card.addEventListener('click', function(e) {
-                    // Ne pas ouvrir le modal si on clique sur le bouton favori
-                    if (!e.target.closest('.favorite-icon')) {
+                    // Ne pas ouvrir le modal si on clique sur le bouton favori, étoiles ou partage
+                    if (!e.target.closest('.favorite-icon') && !e.target.closest('.rating-star') && !e.target.closest('.share-btn')) {
                         const listingId = this.getAttribute('data-listing-id');
                         showListingDetails(listingId);
                     }
@@ -1515,74 +2363,147 @@
                 const lat = document.getElementById('ad-lat').value;
                 const lng = document.getElementById('ad-lng').value;
                 
+                // Validation
                 if (!title || !description || !address || !price) {
-                    alert('Veuillez remplir tous les champs obligatoires (*)');
+                    showToast('Veuillez remplir tous les champs obligatoires (*)', 'error');
                     return;
                 }
                 
-                // Ajouter la nouvelle annonce aux données
-                const newId = listingsData.length + 1;
-                const newListing = {
-                    id: newId,
-                    title: title,
-                    price: parseInt(price),
-                    location: address,
-                    address: address,
-                    lat: parseFloat(lat),
-                    lng: parseFloat(lng),
-                    description: description,
-                    type: "Appartement",
-                    surface: 15,
-                    rooms: 1,
-                    roommates: 3,
-                    features: ["Meublé"],
-                    isFavorite: false
-                };
-                
-                listingsData.push(newListing);
-                
-                // Mettre à jour la carte si elle est initialisée
-                if (map) {
-                    addMarkerToMap(newListing);
+                if (parseFloat(price) <= 0) {
+                    showToast('Le loyer doit être supérieur à 0', 'error');
+                    return;
                 }
                 
-                alert('Annonce publiée avec succès ! Elle est maintenant visible sur la carte.');
+                // Afficher un état de chargement
+                const originalText = this.textContent;
+                this.innerHTML = '<div class="loading"></div>';
+                this.disabled = true;
                 
-                // Réinitialiser le formulaire
-                document.getElementById('ad-title').value = '';
-                document.getElementById('ad-description').value = '';
-                document.getElementById('ad-address').value = '';
-                document.getElementById('ad-price').value = '';
-                
-                // Revenir à l'accueil
+                // Simuler un délai de traitement
+                setTimeout(() => {
+                    // Ajouter la nouvelle annonce aux données
+                    const newId = listingsData.length + 1;
+                    const newListing = {
+                        id: newId,
+                        title: title,
+                        price: parseInt(price),
+                        location: address,
+                        address: address,
+                        lat: parseFloat(lat),
+                        lng: parseFloat(lng),
+                        description: description,
+                        type: "Appartement",
+                        surface: 15,
+                        rooms: 1,
+                        roommates: 3,
+                        features: ["Meublé"],
+                        isFavorite: false,
+                        rating: 0
+                    };
+                    
+                    listingsData.push(newListing);
+                    
+                    // Mettre à jour la carte si elle est initialisée
+                    if (map) {
+                        addMarkerToMap(newListing);
+                    }
+                    
+                    showToast('Annonce publiée avec succès ! Elle est maintenant visible sur la carte.', 'success');
+                    
+                    // Réinitialiser le formulaire
+                    document.getElementById('ad-title').value = '';
+                    document.getElementById('ad-description').value = '';
+                    document.getElementById('ad-address').value = '';
+                    document.getElementById('ad-price').value = '';
+                    
+                    // Réactiver le bouton
+                    this.textContent = originalText;
+                    this.disabled = false;
+                    
+                    // Revenir à l'accueil
+                    document.querySelectorAll('.nav-item').forEach(navItem => {
+                        navItem.classList.remove('active');
+                    });
+                    
+                    document.querySelector('.nav-item[data-section="accueil"]').classList.add('active');
+                    
+                    document.querySelectorAll('.section').forEach(section => {
+                        section.classList.remove('active');
+                    });
+                    
+                    document.getElementById('accueil').classList.add('active');
+                    currentSection = 'accueil';
+                }, 1500);
+            });
+            
+            // Gestion du mode sombre
+            document.getElementById('theme-toggle').addEventListener('click', toggleDarkMode);
+            document.getElementById('dark-mode-toggle').addEventListener('change', toggleDarkMode);
+            
+            // Gestion du profil
+            document.getElementById('user-profile-btn').addEventListener('click', function() {
                 document.querySelectorAll('.nav-item').forEach(navItem => {
                     navItem.classList.remove('active');
                 });
                 
-                document.querySelector('.nav-item[data-section="accueil"]').classList.add('active');
+                document.querySelector('.nav-item[data-section="profil"]').classList.add('active');
                 
                 document.querySelectorAll('.section').forEach(section => {
                     section.classList.remove('active');
                 });
                 
-                document.getElementById('accueil').classList.add('active');
-                currentSection = 'accueil';
+                document.getElementById('profil').classList.add('active');
+                currentSection = 'profil';
             });
+            
+            // Bouton de déconnexion
+            document.getElementById('logout').addEventListener('click', function() {
+                if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
+                    showToast('Déconnexion réussie', 'success');
+                    setTimeout(() => {
+                        // Rediriger vers la page d'accueil
+                        document.querySelectorAll('.nav-item').forEach(navItem => {
+                            navItem.classList.remove('active');
+                        });
+                        
+                        document.querySelector('.nav-item[data-section="accueil"]').classList.add('active');
+                        
+                        document.querySelectorAll('.section').forEach(section => {
+                            section.classList.remove('active');
+                        });
+                        
+                        document.getElementById('accueil').classList.add('active');
+                        currentSection = 'accueil';
+                    }, 1000);
+                }
+            });
+            
+            // Bouton changer mot de passe
+            document.getElementById('change-password').addEventListener('click', function() {
+                showToast('Un email de réinitialisation a été envoyé', 'info');
+            });
+            
+            // Initialiser les notations
+            Object.keys(listingRatings).forEach(listingId => {
+                updateRatingDisplay(listingId, listingRatings[listingId]);
+            });
+            
+            // Initialiser les favoris
+            updateFavoriteIcons();
             
             // Initialisation de la carte (si on est déjà sur la section carte)
             if (document.getElementById('carte').classList.contains('active')) {
                 initMap();
             }
             
-            // Simulation de données
             console.log("Application Coloco initialisée avec succès !");
-            console.log("Fonctionnalités disponibles :");
-            console.log("1. Navigation entre sections");
-            console.log("2. Filtres de recherche avancés");
-            console.log("3. Gestion des favoris");
-            console.log("4. Chat en temps réel");
-            console.log("5. Publication d'annonces");
-            console.log("6. Carte interactive avec marqueurs");
+            console.log("Améliorations ajoutées :");
+            console.log("1. Section Profil avec préférences");
+            console.log("2. Système de notation");
+            console.log("3. Partage d'annonces");
+            console.log("4. Notifications toast");
+            console.log("5. Mode sombre/clair");
+            console.log("6. Validation améliorée des formulaires");
         });
         
         // Initialisation de la carte
@@ -1623,9 +2544,13 @@
                         }).addTo(map)
                         .bindPopup('Vous êtes ici')
                         .openPopup();
+                        
+                        showToast('Localisation détectée', 'success');
+                    }, function() {
+                        showToast('Impossible de détecter votre position', 'error');
                     });
                 } else {
-                    alert("La géolocalisation n'est pas supportée par votre navigateur.");
+                    showToast("La géolocalisation n'est pas supportée par votre navigateur.", 'error');
                 }
             });
             
@@ -1643,7 +2568,7 @@
             // Créer un marqueur personnalisé
             const marker = L.marker([listing.lat, listing.lng], {
                 icon: L.divIcon({
-                    html: `<div class="custom-marker" style="background-color: ${listing.isFavorite ? '#ff4757' : 'var(--primary)'};">
+                    html: `<div class="custom-marker" style="background-color: ${favoriteListings.includes(listing.id.toString()) ? '#ff4757' : 'var(--primary)'};">
                               <i class="fas fa-home"></i>
                            </div>`,
                     iconSize: [40, 40],
@@ -1661,6 +2586,12 @@
                         <span>${listing.location}</span>
                     </div>
                     <p>${listing.description.substring(0, 100)}...</p>
+                    <div class="rating">
+                        ${Array(5).fill().map((_, i) => 
+                            `<i class="${i < listing.rating ? 'fas' : 'far'} fa-star" style="color: #ffc107;"></i>`
+                        ).join('')}
+                        <span style="margin-left: 5px;">${listing.rating.toFixed(1)}</span>
+                    </div>
                     <button class="popup-btn" onclick="showListingDetails(${listing.id})">Voir les détails</button>
                 </div>
             `);
@@ -1691,6 +2622,26 @@
             modalContent.querySelector('.feature:nth-child(2) span').textContent = listing.surface + ' m²';
             modalContent.querySelector('.feature:nth-child(3) span').textContent = listing.roommates + ' colocataires';
             
+            // Mettre à jour les étoiles
+            const ratingEl = modalContent.querySelector('.rating');
+            ratingEl.setAttribute('data-listing-id', listing.id);
+            const stars = ratingEl.querySelectorAll('.rating-star');
+            stars.forEach((star, index) => {
+                star.setAttribute('data-value', index + 1);
+                if (index < listing.rating) {
+                    star.classList.remove('far');
+                    star.classList.add('fas', 'filled');
+                } else {
+                    star.classList.remove('fas', 'filled');
+                    star.classList.add('far');
+                }
+            });
+            ratingEl.querySelector('.rating-value').textContent = listing.rating.toFixed(1);
+            
+            // Mettre à jour le bouton de partage
+            const shareBtn = modalContent.querySelector('.share-btn');
+            shareBtn.setAttribute('data-listing-id', listing.id);
+            
             // Mettre à jour l'image de fond (simulée)
             const imageUrls = [
                 'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
@@ -1716,6 +2667,9 @@
                 });
             }
         }
+        
+        // Rendre les fonctions accessibles globalement pour les popups
+        window.showListingDetails = showListingDetails;
     </script>
 </body>
 </html>
